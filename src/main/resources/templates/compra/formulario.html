@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{index :: head}">
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{index :: menu}"></div>
+    <br/>
+    <form>
+        <div class="mb-3">
+            <input hidden="true" name="id" th:value="${compra.id}" type="text">
+
+            <label class="form-label" for="fornecedor">Fornecedor</label>
+            <input class="form-control" id="fornecedor" name="fornecedor" th:value="${compra.fornecedor}" type="text">
+        </div>
+
+        <br/>
+        <div class="mb-3">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Item</th>
+                    <th>Valor</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item, stat : ${compra.itens}">
+                    <td>
+                        <input th:value="${item.id}" th:name="|itens[${stat.index}].id|" type="text" hidden="true">
+                        <input th:value="${item.id}" class="form-control" type="text" disabled>
+                    </td>
+                    <td>
+                        <input th:value="${item.descricao}" class="form-control"
+                               th:name="|itens[${stat.index}].descricao|" type="text" required>
+                    </td>
+                    <td><input th:value="${item.valor}" class="form-control" th:name="|itens[${stat.index}].valor|"
+                               type="text" required></td>
+                    <td>
+                        <button class="btn btn-outline-dark" formmethod="post" th:formaction="@{'/compra/' + ${stat.index}}"
+                                type="submit">
+                            <i class="bi bi-dash-square"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input class="form-control" type="text" disabled></td>
+                    <td><input class="form-control" th:name="descricao" type="text"></td>
+                    <td><input class="form-control" th:name="valor" type="text"></td>
+                    <td>
+                        <button class="btn btn-outline-dark" formmethod="post" th:formaction="@{/compra}" type="submit">
+                            <i class="bi bi-plus-square"></i>
+                        </button>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <button class="btn btn-dark" formmethod="post" th:formaction="@{/compra/salvar}" type="submit" >Salvar</button>
+    </form>
+</div>
+<div th:insert="~{index :: script}"></div>
+</body>
+</html>
