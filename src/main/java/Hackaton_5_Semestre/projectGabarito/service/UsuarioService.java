@@ -1,7 +1,8 @@
 package Hackaton_5_Semestre.projectGabarito.service;
 
-import br.unialfa.compra_venda.model.Usuario;
-import br.unialfa.compra_venda.repository.UsuarioRepository;
+
+import Hackaton_5_Semestre.projectGabarito.model.Usuario;
+import Hackaton_5_Semestre.projectGabarito.repository.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

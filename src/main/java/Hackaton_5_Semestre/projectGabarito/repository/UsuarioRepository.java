@@ -1,6 +1,6 @@
 package Hackaton_5_Semestre.projectGabarito.repository;
 
-import br.unialfa.compra_venda.model.Usuario;
+import Hackaton_5_Semestre.projectGabarito.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
