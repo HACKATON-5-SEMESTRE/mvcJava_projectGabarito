@@ -1,23 +1,53 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{index :: head}">
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
+    <title>Login Admin</title>
 </head>
-<body>
-<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <form class="p-5 shadow bg-white rounded w-100" style="max-width: 400px;" method="post" th:action="@{/login}">
-        <h4 class="mb-4">Login Admin</h4>
+<body class="bg-light d-flex justify-content-center align-items-start"
+      style="min-height: 100vh; padding-top: 3rem; padding-bottom: 3rem;">
+<div class="card shadow p-4 bg-white rounded" style="width: 100%; max-width: 400px;">
+    <h1 class="text-center fw-bold mb-4">Login</h1>
+
+    <form method="post" th:action="@{/login}">
         <div class="mb-3">
-            <input class="form-control" type="text" name="username" placeholder="Usuário" required>
+            <label for="username" class="form-label fw-semibold">Usuário</label>
+            <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    class="form-control form-control-lg"
+                    placeholder="Digite seu usuário"
+                    required
+                    autofocus
+            />
         </div>
+
         <div class="mb-3">
-            <input class="form-control" type="password" name="password" placeholder="Senha" required>
+            <label for="password" class="form-label fw-semibold">Senha</label>
+            <input
+                    id="password"
+                    type="password"
+                    name="password"
+                    class="form-control form-control-lg"
+                    placeholder="Digite sua senha"
+                    required
+            />
         </div>
-        <div class="d-grid">
-            <button class="btn btn-outline-info" type="submit">Entrar</button>
+
+        <!-- Mensagem de erro exibida condicionalmente -->
+        <div th:if="${param.error}" class="mb-3 text-danger fw-semibold">
+            Usuário ou senha incorretos.
+        </div>
+
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-info btn-lg fw-semibold text-white">
+                Entrar
+            </button>
         </div>
     </form>
 </div>
+
 <div th:insert="~{index :: script}"></div>
 </body>
 </html>

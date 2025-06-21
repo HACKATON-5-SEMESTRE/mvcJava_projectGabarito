@@ -1,45 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{index :: head}">
-  <title th:text="${aluno.id} != null ? 'Editar Aluno' : 'Novo Aluno'">Aluno</title>
+<head th:insert="index :: head">
+    <title th:text="${aluno.id} != null ? 'Editar Aluno' : 'Novo Aluno'">Aluno</title>
 </head>
 <body>
-<div class="container">
-  <div th:insert="~{index :: menu}"></div>
-  <br/>
-  <h2 th:text="${aluno.id} != null ? 'Editar Aluno' : 'Novo Aluno'">Aluno</h2>
-  <form th:action="@{/aluno/salvar}" th:object="${aluno}" method="post">
-    <div class="mb-3">
-      <label for="nome" class="form-label">Nome</label>
-      <input type="text" th:field="*{nome}" class="form-control" id="nome" required>
+<div class="container my-5">
+    <div th:replace="index :: menu"></div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h2 class="mb-0" th:text="${aluno.id} != null ? 'Editar Aluno' : 'Novo Aluno'">Aluno</h2>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/aluno/salvar}" th:object="${aluno}" method="post">
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input type="text" th:field="*{nome}" class="form-control" id="nome" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ra" class="form-label">RA</label>
+                            <input type="text" th:field="*{RA}" class="form-control" id="ra" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" th:field="*{email}" class="form-control" id="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="login" class="form-label">Login</label>
+                            <input type="text" th:field="*{login}" class="form-control" id="login" required>
+                        </div>
+
+                        <div class="mb-3" th:if="${aluno.id} == null">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" th:field="*{password}" class="form-control" id="password" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="turma" class="form-label">Turma</label>
+                            <select th:field="*{turma.id}" class="form-select" id="turma">
+                                <option value="">Selecione uma turma</option>
+                                <option th:each="turma : ${turmas}" th:value="${turma.id}"
+                                        th:text="${turma.nome}"></option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a th:href="@{/aluno/listar}" class="btn btn-secondary btn-sm">Cancelar</a>
+                            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-      <label for="ra" class="form-label">RA</label>
-      <input type="text" th:field="*{RA}" class="form-control" id="ra" required>
-    </div>
-    <div class="mb-3">
-      <label for="email" class="form-label">Email</label>
-      <input type="email" th:field="*{email}" class="form-control" id="email" required>
-    </div>
-    <div class="mb-3">
-      <label for="login" class="form-label">Login</label>
-      <input type="text" th:field="*{login}" class="form-control" id="login" required>
-    </div>
-    <div class="mb-3" th:if="${aluno.id} == null">
-      <label for="password" class="form-label">Senha</label>
-      <input type="password" th:field="*{password}" class="form-control" id="password" required>
-    </div>
-    <div class="mb-3">
-      <label for="turma" class="form-label">Turma</label>
-      <select th:field="*{turma.id}" class="form-control" id="turma">
-        <option value="">Selecione uma turma</option>
-        <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nome}"></option>
-      </select>
-    </div>
-    <button type="submit" class="btn btn-success">Salvar</button>
-    <a th:href="@{/aluno/listar}" class="btn btn-secondary">Cancelar</a>
-  </form>
+
 </div>
-<div th:insert="~{index :: script}"></div>
+
+<div th:insert="index :: script"></div>
 </body>
 </html>

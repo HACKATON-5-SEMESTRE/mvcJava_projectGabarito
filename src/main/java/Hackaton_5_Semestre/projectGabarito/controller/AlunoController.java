@@ -44,11 +44,10 @@ public class AlunoController {
         }
     }
 
-
     @GetMapping("listar")
     public String listar(Model model) {
         model.addAttribute("alunos", alunoService.listarTodos());
-        return "aluno/lista";
+        return "aluno/listar";
     }
 
     @GetMapping("editar/{id}")
