@@ -21,7 +21,6 @@ public class Aluno extends Usuario {
 
     private String RA;
 
-    // Construtor auxiliar para facilitar testes
     public Aluno(String nome, String login, String password, Long cpf, String email, String role, String RA, Turma turma) {
         super(null, nome, login, password, cpf, email, role);
         this.RA = RA;

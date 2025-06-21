@@ -1,42 +1,61 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{index :: head}">
-    <meta charset="UTF-8">
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="index :: head">
+    <title>Lista de Turmas</title>
 </head>
 <body>
-<div class="container">
-    <div th:insert="~{index :: menu}"></div>
-    <br/>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Código</th>
-            <th>Nome</th>
-            <th>Ano</th>
-            <th>Semestre</th>
-            <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="turma : ${turma}">
-            <td th:text="${turma.id}">0</td>
-            <td th:text="${turma.nome}">0</td>
-            <td th:text="${turma.ano}">0</td>
-            <td th:text="${turma.semestre}">0</td>
-            <td>
-                <a th:href="@{'/turma/editar/' + ${turma.id}}" type="button" class="btn btn-outline-dark"
-                   title="Editar">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-                <a th:href="@{'/turma/remover/' + ${turma.id}}" type="button" class="btn btn-outline-dark"
-                   title="Remover">
-                    <i class="bi bi-dash-square"></i>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<div class="container my-5">
+    <div th:replace="index :: menu"></div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Turmas</h2>
+        <a th:href="@{/turma}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-plus-circle"></i> Nova Turma
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Curso</th>
+                <th>Semestre</th>
+                <th>Sala</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="turma : ${turmas}">
+                <td th:text="${turma.id}"></td>
+                <td th:text="${turma.curso}"></td>
+                <td th:text="${turma.semestre} + 'º'"></td>
+                <td th:text="${turma.sala}"></td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group">
+                        <a th:href="@{'/turma/editar/' + ${turma.id}}" class="btn btn-warning" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a th:href="@{'/turma/remover/' + ${turma.id}}" class="btn btn-danger" title="Remover"
+                           onclick="return confirm('Deseja remover esta turma?');">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(turmas)}" class="alert alert-secondary mt-3" role="alert">
+        Nenhuma turma cadastrada.
+    </div>
 </div>
-<div th:insert="~{index :: script}"></div>
+<div th:insert="index :: script"></div>
 </body>
 </html>

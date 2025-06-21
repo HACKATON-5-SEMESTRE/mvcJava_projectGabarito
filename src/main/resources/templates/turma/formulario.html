@@ -1,10 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Listar Turma</title>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="index :: head">
+    <title th:text="${turma.id} != null ? 'Editar Turma' : 'Nova Turma'">Turma</title>
 </head>
 <body>
+<div class="container my-5">
+    <div th:replace="index :: menu"></div>
 
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h2 class="mb-0" th:text="${turma.id} != null ? 'Editar Turma' : 'Nova Turma'">Turma</h2>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/turma/salvar}" th:object="${turma}" method="post">
+                        <div class="mb-3">
+                            <label for="curso" class="form-label">Curso</label>
+                            <input type="text" th:field="*{curso}" class="form-control" id="curso" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="semestre" class="form-label">Semestre</label>
+                            <input type="number" th:field="*{semestre}" class="form-control" id="semestre"
+                                   min="1" max="10" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="sala" class="form-label">Sala</label>
+                            <input type="text" th:field="*{sala}" class="form-control" id="sala" required>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a th:href="@{/turma/listar}" class="btn btn-secondary btn-sm">Cancelar</a>
+                            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:insert="index :: script"></div>
 </body>
 </html>

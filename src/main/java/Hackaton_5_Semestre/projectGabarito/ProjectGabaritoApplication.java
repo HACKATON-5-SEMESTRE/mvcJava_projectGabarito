@@ -47,7 +47,7 @@ public class ProjectGabaritoApplication implements CommandLineRunner {
     public CommandLineRunner popularDados(AlunoService alunoService, TurmaService turmaService) {
         return args -> {
             if (alunoService.listarTodos().isEmpty()) {
-                Turma turma = new Turma(null, "Turma A", 2025, 1);
+                Turma turma = new Turma(null, "Sistemas de Informação", "5º Semestre", "A");
                 turmaService.salvar(turma);
 
                 alunoService.salvar(

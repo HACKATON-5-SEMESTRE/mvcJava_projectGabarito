@@ -18,13 +18,14 @@ public class TurmaController {
     private TurmaService service;
 
     @GetMapping()
-    public String iniciar(Turma turma, Model model) {
+    public String iniciar(Model model) {
+        model.addAttribute("turma", new Turma());
         return "turma/formulario";
     }
 
     @PostMapping()
-    public String inserir(Turma turma, Model model) {
-        return iniciar(turma, model);
+    public String inserir(Turma turma) {
+        return "redirect:/turma";
     }
 
     @PostMapping("salvar")
@@ -32,9 +33,10 @@ public class TurmaController {
         try {
             service.salvar(turma);
             return "redirect:/turma/listar";
-        } catch (Exception e){
-            model.addAttribute("message","Não consegue");
-            return iniciar(turma,model);
+        } catch (Exception e) {
+            model.addAttribute("message", "Erro ao salvar a turma.");
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
         }
     }
 
@@ -51,7 +53,7 @@ public class TurmaController {
     }
 
     @GetMapping("remover/{id}")
-    public String remover(@PathVariable Long id, Model model) {
+    public String remover(@PathVariable Long id) {
         service.deletarPorId(id);
         return "redirect:/turma/listar";
     }

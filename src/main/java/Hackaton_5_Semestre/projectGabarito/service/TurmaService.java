@@ -20,8 +20,7 @@ public class TurmaService {
     }
 
     public List<Turma> listarTodos() {
-        var result = repository.findAll();
-        return result;
+        return repository.findAll();
     }
 
     public Turma buscarPorId(Long id) {
