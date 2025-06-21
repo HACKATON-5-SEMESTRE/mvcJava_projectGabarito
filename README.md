@@ -34,16 +34,15 @@ Este projeto é a parte **backend** da aplicação de correção automatizada de
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-repo-backend.git
-   cd seu-repo-backend
+   git clone https://github.com/HACKATON-5-SEMESTRE/mvcJava_projectGabarito.git
    ```
 
 2. Configure o arquivo `application.properties` com acesso ao banco MySQL:
 
    ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/correcao_provas
+   spring.datasource.url=jdbc:mysql://localhost:3306/hackathon_5
    spring.datasource.username=root
-   spring.datasource.password=senha
+   spring.datasource.password=
    ```
 
 3. Rode a aplicação:
