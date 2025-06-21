@@ -17,10 +17,9 @@ public class Aluno extends Usuario{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
-    private Usuario usuario;
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "turma_id", nullable = true)
+    private Turma turma;
 
     private Long RA;
 }

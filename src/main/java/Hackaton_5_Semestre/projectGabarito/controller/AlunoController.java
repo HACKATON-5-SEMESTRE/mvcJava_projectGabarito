@@ -1,7 +1,9 @@
 package Hackaton_5_Semestre.projectGabarito.controller;
 
 import Hackaton_5_Semestre.projectGabarito.model.Aluno;
+import Hackaton_5_Semestre.projectGabarito.model.Turma;
 import Hackaton_5_Semestre.projectGabarito.service.AlunoService;
+import Hackaton_5_Semestre.projectGabarito.service.TurmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,32 +16,34 @@ public class AlunoController {
     @Autowired
     private AlunoService alunoService;
 
+    @Autowired
+    private TurmaService turmaService;
+
     @GetMapping()
     public String iniciar(Aluno aluno, Model model) {
-        return "usuario/formulario";
+        model.addAttribute("aluno", aluno);
+        model.addAttribute("turmas", turmaService.listarTodos());
+        return "aluno/formulario";
     }
 
-    @PostMapping()
-    public String inserir(Aluno aluno, Model model) {
+    @PostMapping("salvar")
+    public String salvar(@ModelAttribute Aluno aluno, Model model) {
         try {
+            // Se turma foi selecionada, busca no banco; senão, deixa nulo
+            if (aluno.getTurma() != null && aluno.getTurma().getId() != null) {
+                Turma turma = turmaService.buscarPorId(aluno.getTurma().getId());
+                aluno.setTurma(turma);
+            } else {
+                aluno.setTurma(null);
+            }
             alunoService.salvar(aluno);
             return "redirect:/aluno/listar";
-        } catch (Exception e) {
-            model.addAttribute("message", "Erro ao salvar aluno: " + e.getMessage());
+        } catch (Exception e){
+            model.addAttribute("message","Erro ao salvar aluno: " + e.getMessage());
             return "aluno/formulario";
         }
     }
 
-    @PostMapping("salvar")
-    public String salvar(Aluno aluno, Model model) {
-        try {
-            alunoService.salvar(aluno);
-            return "redirect:/aluno/listar";
-        } catch (Exception e){
-            model.addAttribute("message","Não consegue Moisés");
-            return iniciar(aluno, model);
-        }
-    }
 
     @GetMapping("listar")
     public String listar(Model model) {
@@ -50,6 +54,7 @@ public class AlunoController {
     @GetMapping("editar/{id}")
     public String alterar(@PathVariable Long id, Model model) {
         model.addAttribute("aluno", alunoService.buscarPorId(id));
+        model.addAttribute("turmas", turmaService.listarTodos());
         return "aluno/formulario";
     }
 

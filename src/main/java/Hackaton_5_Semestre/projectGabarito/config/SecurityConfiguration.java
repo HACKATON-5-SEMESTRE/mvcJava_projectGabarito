@@ -24,22 +24,10 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))//liberar o banco
-                .httpBasic(Customizer.withDefaults())
-                .authorizeHttpRequests(authorizationRegistry -> authorizationRegistry
-                        .requestMatchers("/login", "/images/**", "/css/**", "/error/**").permitAll()
-                        .requestMatchers("/banco/**").permitAll()
-                        .requestMatchers("/api/**").authenticated()
-                        .requestMatchers("/compra", "/compra/**").hasRole("ADMIN")
-                        .anyRequest().authenticated())
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
-                        .permitAll())
-                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer
-                        .logoutUrl("/logout")
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
-                        .logoutSuccessUrl("/"))
+                .headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.sameOrigin()))
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable) // Desativa o formulário de login
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // Libera tudo
                 .build();
     }
 
@@ -52,6 +40,4 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }
