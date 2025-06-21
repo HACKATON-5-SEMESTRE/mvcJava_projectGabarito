@@ -31,22 +31,18 @@ public class Usuario implements UserDetails {
     private Long cpf;
     private String email;
     private String role;
-    private String privilegio;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
                 new SimpleGrantedAuthority(
-                        this.privilegio.equals("ADMIN")
-                                ? "ROLE_ADMIN" : this.privilegio.equals("PROFESSOR")
-                                ? "ROLE_PROFESSOR" : "ROLE_USER"
+                        switch (this.role) {
+                            case "ADMIN" -> "ROLE_ADMIN";
+                            case "PROFESSOR" -> "ROLE_PROFESSOR";
+                            default -> "ROLE_USER";
+                        }
                 )
         );
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
     }
 
     @Override
@@ -55,22 +51,27 @@ public class Usuario implements UserDetails {
     }
 
     @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

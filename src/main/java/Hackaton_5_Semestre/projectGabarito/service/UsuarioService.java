@@ -24,7 +24,6 @@ public class UsuarioService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
     }
 
-
     public List<Usuario> listAll() {
         return repository.findAll();
     }

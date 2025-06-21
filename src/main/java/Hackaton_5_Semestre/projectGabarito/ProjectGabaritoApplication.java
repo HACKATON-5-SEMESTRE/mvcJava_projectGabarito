@@ -1,16 +1,11 @@
 package Hackaton_5_Semestre.projectGabarito;
 
-import Hackaton_5_Semestre.projectGabarito.model.Aluno;
-import Hackaton_5_Semestre.projectGabarito.model.Turma;
 import Hackaton_5_Semestre.projectGabarito.model.Usuario;
 import Hackaton_5_Semestre.projectGabarito.repository.UsuarioRepository;
-import Hackaton_5_Semestre.projectGabarito.service.AlunoService;
-import Hackaton_5_Semestre.projectGabarito.service.TurmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
@@ -28,7 +23,8 @@ public class ProjectGabaritoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        boolean adminExists = usuarioRepository.findAll().stream().anyMatch(user -> "ADMIN".equalsIgnoreCase(user.getRole()));
+        boolean adminExists = usuarioRepository.findAll().stream()
+                .anyMatch(user -> "ADMIN".equalsIgnoreCase(user.getRole()));
 
         if (!adminExists) {
             Usuario admin = new Usuario();
@@ -39,47 +35,34 @@ public class ProjectGabaritoApplication implements CommandLineRunner {
             admin.setEmail("admin@exemplo.com");
             admin.setRole("ADMIN");
             usuarioRepository.save(admin);
-            System.out.println("Admin criado com login 'admin' e senha 'admin123'");
+            System.out.println("Admin criado com login 'admin' e senha 'admin'");
         }
-    }
 
-    @Bean
-    public CommandLineRunner popularDados(AlunoService alunoService, TurmaService turmaService) {
-        return args -> {
-            if (alunoService.listarTodos().isEmpty()) {
-                Turma turma = new Turma(null, "Turma A", 2025, 1);
-                turmaService.salvar(turma);
+        // Verifica e adiciona dois professores para teste
+        Usuario professor1 = usuarioRepository.findByLogin("prof1").orElse(null);
+        if (professor1 == null) {
+            professor1 = new Usuario();
+            professor1.setNome("Professor Um");
+            professor1.setLogin("prof1");
+            professor1.setPassword(passwordEncoder.encode("123456"));
+            professor1.setCpf(11111111111L);
+            professor1.setEmail("prof1@escola.com");
+            professor1.setRole("PROFESSOR");
+            usuarioRepository.save(professor1);
+            System.out.println("Professor 'prof1' criado com senha '123456'");
+        }
 
-                alunoService.salvar(
-                        new Aluno(
-                                "João da Silva",
-                                "joaos",
-                                "123",
-                                12345678900L,
-                                "joao@gmail.com",
-                                "USER", "1001",
-                                turma));
-                alunoService.salvar(
-                        new Aluno(
-                                "Maria Oliveira",
-                                "mariao", "123",
-                                12345678901L,
-                                "maria@gmail.com",
-                                "USER", "1002",
-                                turma));
-                alunoService.salvar(
-                        new Aluno(
-                                "Carlos Lima",
-                                "carlim",
-                                "123",
-                                12345678902L,
-                                "carlos@gmail.com",
-                                "USER",
-                                "1003",
-                                turma));
-
-                System.out.println("✔ Alunos de teste criados.");
-            }
-        };
+        Usuario professor2 = usuarioRepository.findByLogin("prof2").orElse(null);
+        if (professor2 == null) {
+            professor2 = new Usuario();
+            professor2.setNome("Professor Dois");
+            professor2.setLogin("prof2");
+            professor2.setPassword(passwordEncoder.encode("123456"));
+            professor2.setCpf(22222222222L);
+            professor2.setEmail("prof2@escola.com");
+            professor2.setRole("PROFESSOR");
+            usuarioRepository.save(professor2);
+            System.out.println("Professor 'prof2' criado com senha '123456'");
+        }
     }
 }

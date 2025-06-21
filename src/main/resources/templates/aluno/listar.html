@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="index :: head">
-    <title>Lista de Alunos</title>
-</head>
+<head th:replace="~{fragments/layout :: head}"></head>
 <body>
+
+<div th:replace="~{fragments/layout :: menu}"></div>
+
 <div class="container my-5">
-    <div th:replace="index :: menu"></div>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Alunos</h2>
-        <a th:href="@{/aluno}" class="btn btn-outline-primary btn-sm">
+        <a th:href="@{/admin/aluno/novo}" class="btn btn-outline-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Novo Aluno
         </a>
     </div>
@@ -42,10 +42,10 @@
                 <td th:text="${aluno.turma != null ? aluno.turma.nome : 'N/A'}"></td>
                 <td>
                     <div class="btn-group btn-group-sm" role="group" aria-label="Ações do Aluno">
-                        <a th:href="@{/aluno/editar/{id}(id=${aluno.id})}" class="btn btn-warning" title="Editar">
+                        <a th:href="@{/admin/aluno/editar/{id}(id=${aluno.id})}" class="btn btn-warning" title="Editar">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <a th:href="@{/aluno/remover/{id}(id=${aluno.id})}" class="btn btn-danger"
+                        <a th:href="@{/admin/aluno/remover/{id}(id=${aluno.id})}" class="btn btn-danger"
                            onclick="return confirm('Tem certeza que deseja remover este aluno?')" title="Remover">
                             <i class="bi bi-trash"></i>
                         </a>
@@ -61,6 +61,7 @@
     </div>
 </div>
 
-<div th:insert="index :: script"></div>
+<div th:replace="~{fragments/layout :: script}"></div>
+
 </body>
 </html>

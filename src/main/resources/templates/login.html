@@ -1,33 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{index :: head}">
-    <meta charset="UTF-8"/>
-    <title>Login Admin</title>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head}">
+    <title>Login</title>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-start"
-      style="min-height: 100vh; padding-top: 3rem; padding-bottom: 3rem;">
+<body class="bg-light d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+
 <div class="card shadow p-4 bg-white rounded" style="width: 100%; max-width: 400px;">
     <h1 class="text-center fw-bold mb-4">Login</h1>
-<head th:replace="~{fragments/layout :: head}"></head>
-<body>
 
     <form method="post" th:action="@{/login}">
-<div class="container mt-5">
-    <h2>Login no AutoGabarito</h2>
-    <form th:action="@{/login}" method="post">
         <div class="mb-3">
             <label for="username" class="form-label fw-semibold">Usuário</label>
             <input
                     id="username"
                     type="text"
                     name="username"
-                    class="form-control form-control-lg"
+                    class="form-control"
                     placeholder="Digite seu usuário"
                     required
                     autofocus
             />
-            <label for="username" class="form-label">Usuário:</label>
-            <input type="text" name="username" id="username" class="form-control" placeholder="Digite seu login">
         </div>
 
         <div class="mb-3">
@@ -36,31 +28,24 @@
                     id="password"
                     type="password"
                     name="password"
-                    class="form-control form-control-lg"
+                    class="form-control"
                     placeholder="Digite sua senha"
                     required
             />
-            <label for="password" class="form-label">Senha:</label>
-            <input type="password" name="password" id="password" class="form-control" placeholder="Digite sua senha">
         </div>
 
-        <!-- Mensagem de erro exibida condicionalmente -->
-        <div th:if="${param.error}" class="mb-3 text-danger fw-semibold">
-            Usuário ou senha incorretos.
-        <div th:if="${param.error}" class="alert alert-danger">
+        <div th:if="${param.error}" class="alert alert-danger text-center">
             Usuário ou senha inválidos!
         </div>
 
         <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-info btn-lg fw-semibold text-white">
-                Entrar
+            <button type="submit" class="btn btn-info fw-semibold text-white">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Entrar
             </button>
         </div>
-        <button type="submit" class="btn btn-primary">Entrar</button>
     </form>
 </div>
 
-<div th:insert="~{index :: script}"></div>
 <div th:replace="~{fragments/layout :: script}"></div>
 </body>
 </html>

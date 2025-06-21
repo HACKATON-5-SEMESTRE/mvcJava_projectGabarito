@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="index :: head">
+<head th:replace="~{fragments/layout :: head}">
     <title th:text="${aluno.id} != null ? 'Editar Aluno' : 'Novo Aluno'">Aluno</title>
 </head>
 <body>
-<div class="container my-5">
-    <div th:replace="index :: menu"></div>
 
+<div th:replace="~{fragments/layout :: menu}"></div>
+
+<div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-sm">
@@ -14,7 +15,8 @@
                     <h2 class="mb-0" th:text="${aluno.id} != null ? 'Editar Aluno' : 'Novo Aluno'">Aluno</h2>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/aluno/salvar}" th:object="${aluno}" method="post">
+                    <form th:action="@{/admin/aluno/salvar}" th:object="${aluno}" method="post">
+
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome</label>
                             <input type="text" th:field="*{nome}" class="form-control" id="nome" required>
@@ -50,17 +52,17 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-2">
-                            <a th:href="@{/aluno/listar}" class="btn btn-secondary btn-sm">Cancelar</a>
+                            <a th:href="@{/admin/aluno/listar}" class="btn btn-secondary btn-sm">Cancelar</a>
                             <button type="submit" class="btn btn-success btn-sm">Salvar</button>
                         </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
-<div th:insert="index :: script"></div>
+<div th:replace="~{fragments/layout :: script}"></div>
 </body>
 </html>

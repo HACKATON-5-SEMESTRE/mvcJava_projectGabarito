@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Arrays;
 
 @Controller
-@RequestMapping("disciplina")
+@RequestMapping("/admin/disciplinas")
 public class DisciplinaController {
 
     @Autowired

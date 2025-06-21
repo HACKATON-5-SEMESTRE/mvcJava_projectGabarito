@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("turma")
+@RequestMapping("/admin/turmas")
 public class TurmaController {
 
     @Autowired
@@ -32,9 +32,9 @@ public class TurmaController {
         try {
             service.salvar(turma);
             return "redirect:/turma/listar";
-        } catch (Exception e){
-            model.addAttribute("message","Não consegue");
-            return iniciar(turma,model);
+        } catch (Exception e) {
+            model.addAttribute("message", "Não consegue");
+            return iniciar(turma, model);
         }
     }
 

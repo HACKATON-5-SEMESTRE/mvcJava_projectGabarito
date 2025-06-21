@@ -1,0 +1,3 @@
+@Controller
+@RequestMapping("/professor/provas")
+public class ProvaController {
