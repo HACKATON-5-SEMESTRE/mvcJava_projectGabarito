@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{index :: head}">
   <meta charset="UTF-8">
-  <title>Listar Turma</title>
 </head>
 <body>
+<div class="container">
+  <div th:insert="~{index :: menu}"></div>
+  <br/>
+  <form>
+    <div class="mb-3">
+      <input hidden="true" name="id" th:value="${turma.id}" type="text">
 
+      <label class="form-label" for="id">Código</label>
+      <input class="form-control" id="id" th:value="${turma.id}" type="text" disabled>
+
+      <label class="form-label" for="nome">Nome</label>
+      <input class="form-control" id="nome" name="nome" th:value="${turma.nome}" type="text" required>
+
+      <label class="form-label" for="ano">Ano</label>
+      <input class="form-control" id="ano" name="ano" th:value="${turma.ano}" type="number" required>
+
+      <label class="form-label" for="semestre">Semestre</label>
+      <input class="form-control" id="semestre" name="semestre" th:value="${turma.semestre}" type="number" required>
+    </div>
+
+    <button class="btn btn-dark"
+            formmethod="post"
+            th:formaction="@{/turma/salvar}"
+            type="submit">
+      Salvar
+    </button>
+  </form>
+</div>
+<div th:insert="~{index :: script}"></div>
 </body>
 </html>
