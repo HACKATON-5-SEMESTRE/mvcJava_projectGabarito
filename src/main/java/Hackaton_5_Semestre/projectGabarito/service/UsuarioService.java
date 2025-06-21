@@ -30,4 +30,17 @@ public class UsuarioService implements UserDetailsService {
     public List<Usuario> listAll() {
         return repository.findAll();
     }
+
+    public Usuario buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+    }
+
+    public void salvar(Usuario usuario) {
+        repository.save(usuario);
+    }
+
+    public void deletarPorId(Long id) {
+        repository.deleteById(id);
+    }
+
 }
