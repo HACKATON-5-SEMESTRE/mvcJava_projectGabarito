@@ -32,11 +32,11 @@ public class Prova {
     @ManyToOne
     @JoinColumn(name = "id_disciplina")
     private Disciplina disciplina;
-/*
+
     @ManyToOne
     @JoinColumn(name = "id_professor")
-    private Professor professor;
-*/
+    private Usuario professor;
+
 /*
     @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL)
     private List<RespostaAluno> respostas;

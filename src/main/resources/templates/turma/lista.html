@@ -28,8 +28,11 @@
                    title="Editar">
                     <i class="bi bi-pencil-square"></i>
                 </a>
-                <a th:href="@{'/turma/remover/' + ${turma.id}}" type="button" class="btn btn-outline-dark"
-                   title="Remover">
+                <a th:href="@{'/turma/remover/' + ${turma.id}}"
+                   type="button"
+                   class="btn btn-outline-dark"
+                   title="Remover"
+                   onclick="return confirm('Tem certeza que deseja remover esta turma?');">
                     <i class="bi bi-dash-square"></i>
                 </a>
             </td>
