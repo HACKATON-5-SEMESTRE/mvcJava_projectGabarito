@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{index :: head}"></head>
+<body>
+<div th:insert="~{index :: menu}"></div>
+
+<div class="container mt-5">
+    <h2>Lista de Disciplinas</h2>
+    <a href="/disciplina" class="btn btn-success mb-3">Nova Disciplina</a>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="disciplina : ${disciplinas}">
+            <td th:text="${disciplina.id}"></td>
+            <td th:text="${disciplina.nome}"></td>
+            <td>
+                <a th:href="@{/disciplina/editar/{id}(id=${disciplina.id})}" class="btn btn-primary btn-sm">Editar</a>
+                <a th:href="@{/disciplina/remover/{id}(id=${disciplina.id})}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Tem certeza que deseja remover?');">Remover</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:insert="~{index :: script}"></div>
+</body>
+</html>

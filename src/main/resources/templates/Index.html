@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head th:replace="~{fragments/layout :: head}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: menu}"></div>
+
+<div class="container mt-5">
+    <h2>Bem-vindo ao AutoGabarito!</h2>
+    <p>Você está logado como: <strong th:text="${#authentication.name}">Usuário</strong></p>
+
+    <div th:switch="${#authorization.expression('hasRole(''ADMIN'')') ? 'ADMIN' : (#authorization.expression('hasRole(''PROFESSOR'')') ? 'PROFESSOR' : 'ALUNO')}">
+        <div th:case="'ADMIN'">
+            <h4>Área do Administrador</h4>
+            <ul>
+                <li><a th:href="@{/admin/usuarios}">Gerenciar Usuários</a></li>
+                <li><a th:href="@{/admin/turmas}">Gerenciar Turmas</a></li>
+                <li><a th:href="@{/admin/disciplinas}">Gerenciar Disciplinas</a></li>
+            </ul>
+        </div>
+
+        <div th:case="'PROFESSOR'">
+            <h4>Área do Professor</h4>
+            <ul>
+                <li><a th:href="@{/professor/provas}">Criar Provas</a></li>
+                <li><a th:href="@{/professor/resultados}">Visualizar Resultados</a></li>
+                <li><a th:href="@{/professor/estatisticas}">Ver Estatísticas</a></li>
+            </ul>
+        </div>
+
+        <div th:case="'ALUNO'">
+            <h4>Área do Aluno</h4>
+            <ul>
+                <li><a th:href="@{/aluno/notas}">Ver Notas</a></li>
+                <li><a th:href="@{/aluno/feedbacks}">Ver Feedbacks</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="~{fragments/layout :: script}"></div>
+</body>
+</html>

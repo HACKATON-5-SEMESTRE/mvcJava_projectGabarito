@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{index :: head}"></head>
+<body>
+<div th:insert="~{index :: menu}"></div>
+
+<div class="container mt-5">
+    <h2 th:text="${aluno.id} == null ? 'Cadastrar Aluno' : 'Editar Aluno'"></h2>
+
+    <div th:if="${message}" class="alert alert-danger" th:text="${message}"></div>
+
+    <form th:action="@{/aluno}" th:object="${aluno}" method="post">
+
+        <div class="mb-3">
+            <label for="ra" class="form-label">RA</label>
+            <input type="number" class="form-control" id="ra" placeholder="Digite o RA" th:field="*{RA}" required/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="/aluno/listar" class="btn btn-secondary">Voltar</a>
+    </form>
+</div>
+
+<div th:insert="~{index :: script}"></div>
+</body>
+</html>
