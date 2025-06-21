@@ -20,5 +20,4 @@ public class Turma {
     private Integer ano;
 
     private Integer semestre;
-
 }
