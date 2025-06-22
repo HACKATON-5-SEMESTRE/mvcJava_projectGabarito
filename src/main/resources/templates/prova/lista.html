@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{index :: head}">
+    <meta charset="UTF-8">
+</head>
+<body>
+<div class="container">
+    <div th:insert="~{index :: menu}"></div>
+    <br/>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Código</th>
+            <th>Título</th>
+            <th>Data de Aplicação</th>
+            <th>Turma</th>
+            <th>Disciplina</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="prova : ${provas}">
+            <td th:text="${prova.id}">0</td>
+            <td th:text="${prova.titulo}">Título</td>
+            <td th:text="${#dates.format(prova.dataAplicacao, 'dd/MM/yyyy')}">01/01/2024</td>
+            <td th:text="${prova.turma != null ? prova.turma.nome : '---'}">Turma</td>
+            <td th:text="${prova.disciplina != null ? prova.disciplina.nome : '---'}">Disciplina</td>
+            <td>
+                <a th:href="@{'/prova/editar/' + ${prova.id}}" type="button" class="btn btn-outline-dark"
+                   title="Editar">
+                    <i class="bi bi-pencil-square"></i>
+                </a>
+                <a th:href="@{'/prova/remover/' + ${prova.id}}"
+                   type="button"
+                   class="btn btn-outline-dark"
+                   title="Remover"
+                   onclick="return confirm('Tem certeza que deseja remover esta prova?');">
+                    <i class="bi bi-dash-square"></i>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:insert="~{index :: script}"></div>
+</body>
+</html>

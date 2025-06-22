@@ -22,11 +22,32 @@ public class TurmaController {
 
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Turma turma, Model model) {
+
+        // Validações
+        if (turma.getCurso() == null || turma.getCurso().trim().isEmpty()) {
+            model.addAttribute("erro", "O campo Curso é obrigatório.");
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
+        }
+
+        if (turma.getSala() == null || turma.getSala().trim().isEmpty()) {
+            model.addAttribute("erro", "O campo Sala é obrigatório.");
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
+        }
+
+        if (turma.getSemestre() == null) {
+            model.addAttribute("erro", "O campo Semestre é obrigatório.");
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
+        }
+
         try {
             service.salvar(turma);
             return "redirect:/admin/turmas/listar";
         } catch (Exception e) {
-            model.addAttribute("message", "Erro ao salvar turma: " + e.getMessage());
+            model.addAttribute("erro", "Erro ao salvar a turma: " + e.getMessage());
+            model.addAttribute("turma", turma);
             return "turma/formulario";
         }
     }
@@ -38,14 +59,24 @@ public class TurmaController {
     }
 
     @GetMapping("/editar/{id}")
-    public String alterar(@PathVariable Long id, Model model) {
-        model.addAttribute("turma", service.buscarPorId(id));
-        return "turma/formulario";
+    public String editar(@PathVariable Long id, Model model) {
+        try {
+            Turma turma = service.buscarPorId(id);
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
+        } catch (RuntimeException e) {
+            model.addAttribute("erro", "Turma não encontrada: " + e.getMessage());
+            return "redirect:/admin/turmas/listar";
+        }
     }
 
     @GetMapping("/remover/{id}")
-    public String remover(@PathVariable Long id) {
-        service.deletarPorId(id);
+    public String remover(@PathVariable Long id, Model model) {
+        try {
+            service.deletarPorId(id);
+        } catch (RuntimeException e) {
+            model.addAttribute("erro", "Erro ao remover: " + e.getMessage());
+        }
         return "redirect:/admin/turmas/listar";
     }
 }
