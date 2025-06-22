@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{index :: head}">
+  <meta charset="UTF-8">
+</head>
+<body>
+<div class="container">
+  <div th:insert="~{index :: menu}"></div>
+  <br/>
+  <form>
+
+    <div th:if="${erro}" class="d-flex justify-content-center align-items-center mt-3">
+      <div class="alert alert-danger text-center p-3" style="min-width: 300px; max-width: 600px;">
+        <p class="mb-0" th:text="${erro}"></p>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <input hidden="true" name="id" th:value="${prova.id}" type="text">
+
+      <label class="form-label" for="id">Código</label>
+      <input class="form-control" id="id" th:value="${prova.id}" type="text" disabled>
+
+      <label class="form-label" for="titulo">Título</label>
+      <input class="form-control" id="titulo" name="titulo" th:value="${prova.titulo}" type="text" required>
+
+      <label class="form-label" for="dataAplicacao">Data de Aplicação</label>
+      <input class="form-control" id="dataAplicacao" name="dataAplicacao" th:value="${#dates.format(prova.dataAplicacao, 'yyyy-MM-dd')}" type="date" required>
+
+      <label class="form-label" for="gabaritoOficial">Gabarito Oficial</label>
+      <textarea class="form-control" id="gabaritoOficial" name="gabaritoOficial" rows="4" required
+                th:text="${prova.gabaritoOficial}"></textarea>
+
+      <label class="form-label mt-2" for="turma">Turma</label>
+      <select class="form-select" id="turma" name="turma.id" required>
+        <option value="">Selecione</option>
+        <option th:each="t : ${turmas}"
+                th:value="${t.id}"
+                th:text="${t.nome + ' - ' + t.ano + '/' + t.semestre}"
+                th:selected="${prova.turma != null and prova.turma.id == t.id}">
+        </option>
+      </select>
+
+      <label class="form-label mt-2" for="disciplina">Disciplina</label>
+      <select class="form-select" id="disciplina" name="disciplina.id" required>
+        <option value="">Selecione</option>
+        <option th:each="d : ${disciplinas}"
+                th:value="${d.id}"
+                th:text="${d.nome}"
+                th:selected="${prova.disciplina != null and prova.disciplina.id == d.id}">
+        </option>
+      </select>
+    </div>
+
+    <button class="btn btn-dark"
+            formmethod="post"
+            th:formaction="@{/prova/salvar}"
+            type="submit">
+      Salvar
+    </button>
+  </form>
+</div>
+<div th:insert="~{index :: script}"></div>
+</body>
+</html>

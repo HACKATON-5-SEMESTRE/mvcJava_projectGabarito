@@ -2,6 +2,7 @@ package Hackaton_5_Semestre.projectGabarito.controller;
 
 import Hackaton_5_Semestre.projectGabarito.model.RespostasAluno;
 import Hackaton_5_Semestre.projectGabarito.service.AlunoService;
+import Hackaton_5_Semestre.projectGabarito.service.ProvaService;
 import Hackaton_5_Semestre.projectGabarito.service.RespostasAlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,14 +21,14 @@ public class RespostasAlunoController {
     @Autowired
     private AlunoService alunoService;
 
-    //@Autowired
-    //private ProvaService provaService;
+    @Autowired
+    private ProvaService provaService;
 
     @GetMapping()
     public String iniciar(RespostasAluno respostasAluno, Model model) {
         model.addAttribute("respostasAluno", respostasAluno);
         model.addAttribute("alunos", alunoService.listarTodos());
-        //model.addAttribute("provas", provaService.listarTodos());
+        model.addAttribute("provas", provaService.listarTodos());
 
         return "respostas/formulario";
     }
@@ -44,7 +45,7 @@ public class RespostasAlunoController {
         } catch (Exception e) {
             model.addAttribute("message", "Erro ao salvar resposta: " + e.getMessage());
             model.addAttribute("alunos", alunoService.listarTodos());
-            //model.addAttribute("provas", provaService.listarTodos());
+            model.addAttribute("provas", provaService.listarTodos());
 
             return "respostas/formulario";
         }
@@ -63,7 +64,7 @@ public class RespostasAlunoController {
 
         model.addAttribute("respostasAluno", respostasAluno);
         model.addAttribute("alunos", alunoService.listarTodos());
-        //model.addAttribute("provas", provaService.listarTodos());
+        model.addAttribute("provas", provaService.listarTodos());
 
         return "respostas/formulario";
     }

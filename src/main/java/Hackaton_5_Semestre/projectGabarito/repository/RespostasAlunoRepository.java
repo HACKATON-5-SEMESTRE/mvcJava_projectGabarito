@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface RespostasAlunoRepository extends JpaRepository<RespostasAluno, Long> {
-    List<RespostasAluno> findByAlunoId(Long alunoId);
-    List<RespostasAluno> findByProvaId(Long provaId);
+    List<RespostasAluno> findByAluno_Id(Long alunoId);
+    List<RespostasAluno> findByProva_Id(Long provaId);
 }

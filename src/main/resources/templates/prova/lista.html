@@ -11,28 +11,30 @@
         <thead>
         <tr>
             <th>Código</th>
-            <th>Nome</th>
-            <th>Ano</th>
-            <th>Semestre</th>
+            <th>Título</th>
+            <th>Data de Aplicação</th>
+            <th>Turma</th>
+            <th>Disciplina</th>
             <th>Ações</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="turma : ${turmas}">
-            <td th:text="${turma.id}">0</td>
-            <td th:text="${turma.nome}">0</td>
-            <td th:text="${turma.ano}">0</td>
-            <td th:text="${turma.semestre}">0</td>
+        <tr th:each="prova : ${provas}">
+            <td th:text="${prova.id}">0</td>
+            <td th:text="${prova.titulo}">Título</td>
+            <td th:text="${#dates.format(prova.dataAplicacao, 'dd/MM/yyyy')}">01/01/2024</td>
+            <td th:text="${prova.turma != null ? prova.turma.nome : '---'}">Turma</td>
+            <td th:text="${prova.disciplina != null ? prova.disciplina.nome : '---'}">Disciplina</td>
             <td>
-                <a th:href="@{'/turma/editar/' + ${turma.id}}" type="button" class="btn btn-outline-dark"
+                <a th:href="@{'/prova/editar/' + ${prova.id}}" type="button" class="btn btn-outline-dark"
                    title="Editar">
                     <i class="bi bi-pencil-square"></i>
                 </a>
-                <a th:href="@{'/turma/remover/' + ${turma.id}}"
+                <a th:href="@{'/prova/remover/' + ${prova.id}}"
                    type="button"
                    class="btn btn-outline-dark"
                    title="Remover"
-                   onclick="return confirm('Tem certeza que deseja remover esta turma?');">
+                   onclick="return confirm('Tem certeza que deseja remover esta prova?');">
                     <i class="bi bi-dash-square"></i>
                 </a>
             </td>

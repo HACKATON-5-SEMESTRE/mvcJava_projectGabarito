@@ -25,6 +25,10 @@ public class RespostasAluno {
     @JoinColumn(name = "id_aluno", nullable = false)
     private Aluno aluno;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "id_prova", nullable = false)
+    private Prova prova;
+
     @Column(columnDefinition = "LONGTEXT", nullable = false)
     private String respostas;
 

@@ -31,12 +31,10 @@ public class RespostasAlunoService {
     }
 
     public List<RespostasAluno> buscarPorAluno(Long alunoId) {
-        return repository.findByAlunoId(alunoId);
+        return repository.findByAluno_Id(alunoId);
     }
 
-    /*
     public List<RespostasAluno> buscarPorProva(Long provaId) {
-        return repository.findByProvaId(provaId);
+        return repository.findByProva_Id(provaId);
     }
-    */
 }
