@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TurmaService {
@@ -23,9 +24,10 @@ public class TurmaService {
         return repository.findAll();
     }
 
-    public Turma buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow();
+    public Optional<Turma> buscarPorId(Long id) {
+        return repository.findById(id);
     }
+
 
     public void deletarPorId(Long id) {
         repository.deleteById(id);

@@ -17,7 +17,7 @@ public class ProvaService {
 
     @Transactional
     public void salvar(Prova prova) {
-       // prova.getRespostas().forEach(resposta -> resposta.setProva(prova));
+        prova.getRespostas().forEach(resposta -> resposta.setProva(prova));
         repository.save(prova);
     }
 

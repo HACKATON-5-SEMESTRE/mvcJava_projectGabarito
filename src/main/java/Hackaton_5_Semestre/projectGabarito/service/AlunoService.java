@@ -30,6 +30,9 @@ public class AlunoService {
 
     @Transactional
     public void deletarPorId(Long id) {
+        if (!alunoRepository.existsById(id)) {
+            throw new IllegalArgumentException("Aluno não encontrado: " + id);
+        }
         alunoRepository.deleteById(id);
     }
 }

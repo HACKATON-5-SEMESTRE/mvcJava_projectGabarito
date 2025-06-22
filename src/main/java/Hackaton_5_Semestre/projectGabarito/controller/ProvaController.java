@@ -1,6 +1,7 @@
 package Hackaton_5_Semestre.projectGabarito.controller;
 
 import Hackaton_5_Semestre.projectGabarito.model.Prova;
+import Hackaton_5_Semestre.projectGabarito.model.RespostasAluno;
 import Hackaton_5_Semestre.projectGabarito.model.Turma;
 import Hackaton_5_Semestre.projectGabarito.service.ProvaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("prova")
@@ -22,9 +25,9 @@ public class ProvaController {
     public String iniciar(Prova prova, Model model) {
         return "prova/formulario";
     }
-/*
+
    @PostMapping()
-    public String inserir(Prova prova, Model model, RespostaAluno respostaAluno) {
+    public String inserir(Prova prova, Model model, RespostasAluno respostaAluno) {
         if (prova.getRespostas() == null) {
             prova.setRespostas(Arrays.asList(respostaAluno));
         } else {
@@ -75,7 +78,7 @@ public class ProvaController {
             return "prova/formulario";
         }
     }
- */
+
 
     @GetMapping("listar")
     public String listar(Model model) {

@@ -7,9 +7,11 @@ import Hackaton_5_Semestre.projectGabarito.service.AlunoService;
 import Hackaton_5_Semestre.projectGabarito.service.TurmaService;
 import Hackaton_5_Semestre.projectGabarito.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -33,53 +35,70 @@ public class AlunoController {
         return "aluno/formulario";
     }
 
-
-    // Formulário de edição
     @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Long id, Model model) {
-        Optional<Aluno> aluno = alunoService.buscarPorId(id);
-        model.addAttribute("aluno", aluno);
-        model.addAttribute("turmas", turmaService.listarTodos());
-        return "aluno/formulario";
+    public String editar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Aluno> alunoOpt = alunoService.buscarPorId(id);
+        if (alunoOpt.isPresent()) {
+            model.addAttribute("aluno", alunoOpt.get());
+            model.addAttribute("turmas", turmaService.listarTodos());
+            return "aluno/formulario";
+        } else {
+            redirectAttributes.addFlashAttribute("erro", "Aluno não encontrado.");
+            return "redirect:/admin/aluno/listar";
+        }
     }
 
     @PostMapping("/salvar")
-    public String salvar(@ModelAttribute Aluno aluno, Model model) {
+    public String salvar(@ModelAttribute Aluno aluno, Model model, RedirectAttributes redirectAttributes) {
         try {
-            // Salvar o usuário primeiro, se existir
+            // Salvar o usuário associado
             Usuario usuario = aluno.getUsuario();
             if (usuario != null) {
-                usuarioService.salvar(usuario); // precisa garantir que haja método salvar no service
+                usuarioService.salvar(usuario);
             }
 
-            // Associar a turma corretamente
+            // Validar e associar turma
             if (aluno.getTurma() != null && aluno.getTurma().getId() != null) {
-                Turma turma = turmaService.buscarPorId(aluno.getTurma().getId());
-                aluno.setTurma(turma);
+                Optional<Turma> optionalTurma = turmaService.buscarPorId(aluno.getTurma().getId());
+                if (optionalTurma.isPresent()) {
+                    aluno.setTurma(optionalTurma.get());
+                } else {
+                    model.addAttribute("erro", "Turma não encontrada.");
+                    model.addAttribute("turmas", turmaService.listarTodos());
+                    return "aluno/formulario";
+                }
             }
 
             alunoService.salvar(aluno);
+            redirectAttributes.addFlashAttribute("sucesso", "Aluno salvo com sucesso.");
             return "redirect:/admin/aluno/listar";
 
         } catch (Exception e) {
-            model.addAttribute("message", "Erro ao salvar aluno: " + e.getMessage());
+            model.addAttribute("erro", "Erro ao salvar aluno: " + e.getMessage());
             model.addAttribute("turmas", turmaService.listarTodos());
             return "aluno/formulario";
         }
     }
 
-
-    // Listagem de alunos
     @GetMapping("/listar")
-    public String listar(Model model) {
+    public String listar(Model model, @ModelAttribute("sucesso") String sucesso,
+                         @ModelAttribute("erro") String erro) {
         model.addAttribute("alunos", alunoService.listarTodos());
-        return "aluno/listar";
+        model.addAttribute("sucesso", sucesso);
+        model.addAttribute("erro", erro);
+        return "aluno/lista";
     }
 
-    // Remoção de aluno
     @GetMapping("/remover/{id}")
-    public String remover(@PathVariable Long id) {
-        alunoService.deletarPorId(id);
+    public String remover(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            alunoService.deletarPorId(id);
+            redirectAttributes.addFlashAttribute("sucesso", "Aluno removido com sucesso!");
+        } catch (EmptyResultDataAccessException e) {
+            redirectAttributes.addFlashAttribute("erro", "Aluno não encontrado: " + id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erro", "Erro ao remover aluno: " + e.getMessage());
+        }
         return "redirect:/admin/aluno/listar";
     }
 }

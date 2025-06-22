@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/admin/turmas")
 public class TurmaController {
@@ -61,7 +63,7 @@ public class TurmaController {
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         try {
-            Turma turma = service.buscarPorId(id);
+            Optional<Turma> turma = service.buscarPorId(id); //Alterei para Optional
             model.addAttribute("turma", turma);
             return "turma/formulario";
         } catch (RuntimeException e) {

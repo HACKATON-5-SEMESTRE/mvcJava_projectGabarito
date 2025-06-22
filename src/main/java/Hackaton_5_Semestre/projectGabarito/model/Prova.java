@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,8 +38,6 @@ public class Prova {
     @JoinColumn(name = "id_professor")
     private Usuario professor;
 
-/*
     @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL)
-    private List<RespostaAluno> respostas;
-*/
+    private List<RespostasAluno> respostas;
 }
