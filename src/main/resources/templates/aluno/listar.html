@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: menu}"></div>
+
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Alunos</h2>
+        <a th:href="@{/admin/aluno/novo}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-plus-circle"></i> Novo Aluno
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>RA</th>
+                <th>Email</th>
+                <th>Login</th>
+                <th>Turma</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="aluno : ${alunos}">
+                <td th:text="${aluno.id}"></td>
+                <td th:text="${aluno.usuario.nome}"></td>
+                <td th:text="${aluno.RA}"></td>
+                <td th:text="${aluno.usuario.email}"></td>
+                <td th:text="${aluno.usuario.login}"></td>
+                <td th:text="${aluno.turma.curso + ' - ' + aluno.turma.semestre + 'º Semestre - ' + aluno.turma.sala}"></td>
+                <td>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Ações do Aluno">
+                        <a th:href="@{/admin/aluno/editar/{id}(id=${aluno.id})}" class="btn btn-warning" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a th:href="@{/admin/aluno/remover/{id}(id=${aluno.id})}" class="btn btn-danger"
+                           onclick="return confirm('Tem certeza que deseja remover este aluno?')" title="Remover">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(alunos)}" class="alert alert-secondary mt-3" role="alert">
+        Nenhum aluno cadastrado.
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: script}"></div>
+
+</body>
+</html>

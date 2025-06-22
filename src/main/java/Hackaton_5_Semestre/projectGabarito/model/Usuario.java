@@ -1,13 +1,7 @@
 package Hackaton_5_Semestre.projectGabarito.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,16 +14,21 @@ import java.util.Collections;
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     private String nome;
+
+    @Column(unique = true)
     private String login;
+
     private String password;
-    private Long cpf;
+    private String cpf;
     private String email;
     private String role;
 
@@ -37,35 +36,42 @@ public class Usuario implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(
                 new SimpleGrantedAuthority(
-                        this.role.equals("ADMIN")
-                                ? "ROLE_ADMIN" : this.role.equals("PROFESSOR")
-                                ? "ROLE_PROFESSOR" : "ROLE_USER"
+                        switch (this.role) {
+                            case "ADMIN" -> "ROLE_ADMIN";
+                            case "PROFESSOR" -> "ROLE_PROFESSOR";
+                            default -> "ROLE_USER";
+                        }
                 )
         );
     }
 
     @Override
     public String getUsername() {
-        return this.login;
+        return login;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

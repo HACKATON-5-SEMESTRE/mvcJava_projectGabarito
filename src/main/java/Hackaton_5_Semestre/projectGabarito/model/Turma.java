@@ -1,6 +1,9 @@
 package Hackaton_5_Semestre.projectGabarito.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,9 +18,8 @@ public class Turma {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nome;
+    private String semestre;
+    private String curso;
+    private String sala;
 
-    private Integer ano;
-
-    private Integer semestre;
 }

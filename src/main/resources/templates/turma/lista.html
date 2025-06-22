@@ -1,45 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{index :: head}">
-    <meta charset="UTF-8">
-</head>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head}"></head>
 <body>
-<div class="container">
-    <div th:insert="~{index :: menu}"></div>
-    <br/>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Código</th>
-            <th>Nome</th>
-            <th>Ano</th>
-            <th>Semestre</th>
-            <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="turma : ${turmas}">
-            <td th:text="${turma.id}">0</td>
-            <td th:text="${turma.nome}">0</td>
-            <td th:text="${turma.ano}">0</td>
-            <td th:text="${turma.semestre}">0</td>
-            <td>
-                <a th:href="@{'/turma/editar/' + ${turma.id}}" type="button" class="btn btn-outline-dark"
-                   title="Editar">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-                <a th:href="@{'/turma/remover/' + ${turma.id}}"
-                   type="button"
-                   class="btn btn-outline-dark"
-                   title="Remover"
-                   onclick="return confirm('Tem certeza que deseja remover esta turma?');">
-                    <i class="bi bi-dash-square"></i>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+
+<div th:replace="~{fragments/layout :: menu}"></div>
+
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Turmas</h2>
+        <a th:href="@{/admin/turmas/novo}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-plus-circle"></i> Nova Turma
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Curso</th>
+                <th>Semestre</th>
+                <th>Sala</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="turma : ${turmas}">
+                <td th:text="${turma.id}">1</td>
+                <td th:text="${turma.curso}">2025</td>
+                <td th:text="${turma.semestre}">1</td>
+                <td th:text="${turma.sala}">Sala 01</td>
+                <td>
+                    <a th:href="@{/admin/turmas/editar/{id}(id=${turma.id})}" class="btn btn-warning btn-sm"
+                       title="Editar">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a th:href="@{/admin/turmas/remover/{id}(id=${turma.id})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Tem certeza que deseja remover esta turma?')" title="Remover">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(turmas)}" class="alert alert-secondary mt-3" role="alert">
+        Nenhuma turma cadastrada.
+    </div>
 </div>
-<div th:insert="~{index :: script}"></div>
+
+<div th:replace="~{fragments/layout :: script}"></div>
+
 </body>
 </html>
