@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: menu}"></div>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-header text-center">
+                    <h2 class="mb-0">Adicionar Múltiplas Questões</h2>
+                    <p class="text-muted" th:text="'Prova: ' + ${prova.titulo}"></p>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/professor/questao/salvarMultiplas}" method="post"
+                          th:object="${questoesWrapper}">
+                        <input type="hidden" name="provaId" th:value="${prova.id}"/>
+
+                        <div id="questoes-container">
+                            <div th:each="questao, iterStat : *{questoes}" class="border rounded p-3 mb-3">
+                                <input type="hidden" th:name="|questoes[${iterStat.index}].id|"
+                                       th:value="${questao.id}"/>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Enunciado</label>
+                                    <textarea th:name="|questoes[${iterStat.index}].enunciado|" class="form-control"
+                                              rows="3" required
+                                              th:text="${questao.enunciado}"></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Peso</label>
+                                    <input type="number" step="0.1" min="0" th:name="|questoes[${iterStat.index}].peso|"
+                                           class="form-control" required
+                                           th:value="${questao.peso}"/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Tipo</label>
+                                    <select th:name="|questoes[${iterStat.index}].tipo|" class="form-select" required>
+                                        <option value="">Selecione</option>
+                                        <option th:selected="${questao.tipo == T(Hackaton_5_Semestre.projectGabarito.model.TipoQuestao).OBJETIVA}"
+                                                value="OBJETIVA">Objetiva
+                                        </option>
+                                        <option th:selected="${questao.tipo == T(Hackaton_5_Semestre.projectGabarito.model.TipoQuestao).DISSERTATIVA}"
+                                                value="DISSERTATIVA">Dissertativa
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <button type="button" class="btn btn-danger btn-sm"
+                                        onclick="this.closest('.border').remove()">Remover
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 text-end">
+                            <button type="button" class="btn btn-primary btn-sm" onclick="adicionarQuestao()">+
+                                Adicionar Questão
+                            </button>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a th:href="@{/professor/prova/listar}" class="btn btn-secondary btn-sm">Cancelar</a>
+                            <button type="submit" class="btn btn-success btn-sm">Salvar Todas</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/layout :: script}"></div>
+<script>
+    function adicionarQuestao() {
+        const container = document.getElementById('questoes-container');
+        const index = container.children.length;
+
+        const novaQuestao = document.createElement('div');
+        novaQuestao.classList.add('border', 'rounded', 'p-3', 'mb-3');
+
+        novaQuestao.innerHTML = `
+            <input type="hidden" name="questoes[${index}].id" />
+            <div class="mb-3">
+                <label class="form-label">Enunciado</label>
+                <textarea name="questoes[${index}].enunciado" class="form-control" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Peso</label>
+                <input type="number" step="0.1" min="0" name="questoes[${index}].peso" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Tipo</label>
+                <select name="questoes[${index}].tipo" class="form-select" required>
+                    <option value="">Selecione</option>
+                    <option value="OBJETIVA">Objetiva</option>
+                    <option value="DISSERTATIVA">Dissertativa</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.border').remove()">Remover</button>
+        `;
+
+        container.appendChild(novaQuestao);
+    }
+</script>
+</body>
+</html>

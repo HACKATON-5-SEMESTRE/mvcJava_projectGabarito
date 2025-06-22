@@ -1,47 +1,65 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{index :: head}">
-    <meta charset="UTF-8">
-</head>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head}"></head>
 <body>
-<div class="container">
-    <div th:insert="~{index :: menu}"></div>
-    <br/>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>Código</th>
-            <th>Título</th>
-            <th>Data de Aplicação</th>
-            <th>Turma</th>
-            <th>Disciplina</th>
-            <th>Ações</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="prova : ${provas}">
-            <td th:text="${prova.id}">0</td>
-            <td th:text="${prova.titulo}">Título</td>
-            <td th:text="${#dates.format(prova.dataAplicacao, 'dd/MM/yyyy')}">01/01/2024</td>
-            <td th:text="${prova.turma != null ? prova.turma.nome : '---'}">Turma</td>
-            <td th:text="${prova.disciplina != null ? prova.disciplina.nome : '---'}">Disciplina</td>
-            <td>
-                <a th:href="@{'/prova/editar/' + ${prova.id}}" type="button" class="btn btn-outline-dark"
-                   title="Editar">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-                <a th:href="@{'/prova/remover/' + ${prova.id}}"
-                   type="button"
-                   class="btn btn-outline-dark"
-                   title="Remover"
-                   onclick="return confirm('Tem certeza que deseja remover esta prova?');">
-                    <i class="bi bi-dash-square"></i>
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+
+<div th:replace="~{fragments/layout :: menu}"></div>
+
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Provas</h2>
+        <a th:href="@{/professor/prova/formulario}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-plus-circle"></i> Nova Prova
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Enunciado</th>
+                <th>Peso</th>
+                <th>Tipo</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="questao : ${questoes}">
+                <td th:text="${questao.id}">0</td>
+                <td th:text="${#strings.abbreviate(questao.enunciado, 50)}">Enunciado</td>
+                <td th:text="${questao.peso}">Peso</td>
+                <td th:text="${questao.tipo}">Tipo</td>
+                <td>
+                    <a th:href="@{/professor/prova/questao/formulario/{id}(id=${questao.id})}"
+                       class="btn btn-warning btn-sm"
+                       title="Editar">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a th:href="@{/professor/prova/questao/remover/{id}(id=${questao.id})}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Tem certeza que deseja remover esta questão?')" title="Remover">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(questoes)}" class="alert alert-secondary mt-3" role="alert">
+        Nenhuma questão cadastrada.
+    </div>
+
 </div>
-<div th:insert="~{index :: script}"></div>
+
+<div th:replace="~{fragments/layout :: script}"></div>
+
 </body>
 </html>

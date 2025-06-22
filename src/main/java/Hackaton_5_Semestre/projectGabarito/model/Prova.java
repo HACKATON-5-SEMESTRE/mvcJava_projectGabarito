@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,8 +21,7 @@ public class Prova {
 
     private String titulo;
 
-    @Temporal(TemporalType.DATE)
-    private Date dataAplicacao;
+    private LocalDate dataAplicacao;
 
     @Lob
     private String gabaritoOficial;
@@ -35,9 +35,13 @@ public class Prova {
     private Disciplina disciplina;
 
     @ManyToOne
-    @JoinColumn(name = "id_professor")
+    @JoinColumn(name = "id_usuario")
     private Usuario professor;
 
     @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL)
     private List<RespostasAluno> respostas;
+
+    @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Questoes> questoes = new ArrayList<>();
+
 }

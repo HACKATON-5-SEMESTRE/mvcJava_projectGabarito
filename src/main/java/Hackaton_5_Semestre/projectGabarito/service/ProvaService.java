@@ -1,22 +1,43 @@
 package Hackaton_5_Semestre.projectGabarito.service;
 
+import Hackaton_5_Semestre.projectGabarito.model.Disciplina;
 import Hackaton_5_Semestre.projectGabarito.model.Prova;
+import Hackaton_5_Semestre.projectGabarito.model.Turma;
+import Hackaton_5_Semestre.projectGabarito.repository.DisciplinaRepository;
 import Hackaton_5_Semestre.projectGabarito.repository.ProvaRepository;
+import Hackaton_5_Semestre.projectGabarito.repository.TurmaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProvaService {
 
     @Autowired
+    private TurmaRepository turmaRepository;
+
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
+
+    @Autowired
     private ProvaRepository repository;
 
+    public List<Turma> buscarTodasTurmas() {
+        return turmaRepository.findAll();
+    }
+
+    public List<Disciplina> buscarTodasDisciplinas() {
+        return disciplinaRepository.findAll();
+    }
 
     @Transactional
     public void salvar(Prova prova) {
+        if (prova.getRespostas() == null) {
+            prova.setRespostas(new ArrayList<>());
+        }
         prova.getRespostas().forEach(resposta -> resposta.setProva(prova));
         repository.save(prova);
     }
@@ -26,7 +47,9 @@ public class ProvaService {
     }
 
     public Prova buscarPorId(Long id) {
-        return repository.findById(id).get();
+        Prova prova = repository.findById(id).orElseThrow(() -> new RuntimeException("Prova não encontrada"));
+        prova.getQuestoes().size(); // força carregar a lista
+        return prova;
     }
 
     public void deletarPorId(Long id) {
