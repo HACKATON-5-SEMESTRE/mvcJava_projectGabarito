@@ -38,7 +38,6 @@ public class ProjectGabaritoApplication implements CommandLineRunner {
             System.out.println("Admin criado com login 'admin' e senha 'admin'");
         }
 
-        // Verifica e adiciona dois professores para teste
         Usuario professor1 = usuarioRepository.findByLogin("prof1").orElse(null);
         if (professor1 == null) {
             professor1 = new Usuario();

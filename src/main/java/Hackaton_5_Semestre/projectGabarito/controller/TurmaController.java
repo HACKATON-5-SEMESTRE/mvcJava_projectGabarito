@@ -63,9 +63,14 @@ public class TurmaController {
     @GetMapping("/editar/{id}")
     public String editar(@PathVariable Long id, Model model) {
         try {
-            Optional<Turma> turma = service.buscarPorId(id); //Alterei para Optional
-            model.addAttribute("turma", turma);
-            return "turma/formulario";
+            Optional<Turma> turmaOpt = service.buscarPorId(id);
+            if (turmaOpt.isPresent()) {
+                model.addAttribute("turma", turmaOpt.get()); // ✅ Corrigido
+                return "turma/formulario";
+            } else {
+                model.addAttribute("erro", "Turma não encontrada.");
+                return "redirect:/admin/turmas/listar";
+            }
         } catch (RuntimeException e) {
             model.addAttribute("erro", "Turma não encontrada: " + e.getMessage());
             return "redirect:/admin/turmas/listar";

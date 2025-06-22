@@ -1,9 +1,6 @@
 package Hackaton_5_Semestre.projectGabarito.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,7 +23,10 @@ public class Usuario implements UserDetails {
     private Long id;
 
     private String nome;
+
+    @Column(unique = true)
     private String login;
+
     private String password;
     private Long cpf;
     private String email;

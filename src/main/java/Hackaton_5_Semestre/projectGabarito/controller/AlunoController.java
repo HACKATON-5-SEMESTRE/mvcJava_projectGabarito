@@ -51,25 +51,37 @@ public class AlunoController {
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Aluno aluno, Model model, RedirectAttributes redirectAttributes) {
         try {
-            // Salvar o usuário associado
             Usuario usuario = aluno.getUsuario();
-            if (usuario != null) {
-                usuarioService.salvar(usuario);
+
+            // Validação login duplicado
+            if (usuarioService.loginExiste(usuario.getLogin(), usuario.getId())) {
+                model.addAttribute("erro", "Login já cadastrado!");
+                model.addAttribute("turmas", turmaService.listarTodos());
+                return "aluno/formulario";
             }
 
-            // Validar e associar turma
+            // Validação e-mail duplicado
+            if (usuarioService.emailExiste(usuario.getEmail(), usuario.getId())) {
+                model.addAttribute("erro", "E-mail já cadastrado!");
+                model.addAttribute("turmas", turmaService.listarTodos());
+                return "aluno/formulario";
+            }
+
+            // Validação turma
             if (aluno.getTurma() != null && aluno.getTurma().getId() != null) {
                 Optional<Turma> optionalTurma = turmaService.buscarPorId(aluno.getTurma().getId());
-                if (optionalTurma.isPresent()) {
-                    aluno.setTurma(optionalTurma.get());
-                } else {
+                if (optionalTurma.isEmpty()) {
                     model.addAttribute("erro", "Turma não encontrada.");
                     model.addAttribute("turmas", turmaService.listarTodos());
                     return "aluno/formulario";
                 }
+                aluno.setTurma(optionalTurma.get());
             }
 
+            // Salva usuário e aluno
+            usuarioService.salvar(usuario);
             alunoService.salvar(aluno);
+
             redirectAttributes.addFlashAttribute("sucesso", "Aluno salvo com sucesso.");
             return "redirect:/admin/aluno/listar";
 
@@ -81,12 +93,11 @@ public class AlunoController {
     }
 
     @GetMapping("/listar")
-    public String listar(Model model, @ModelAttribute("sucesso") String sucesso,
-                         @ModelAttribute("erro") String erro) {
+    public String listar(Model model, @ModelAttribute("sucesso") String sucesso, @ModelAttribute("erro") String erro) {
         model.addAttribute("alunos", alunoService.listarTodos());
         model.addAttribute("sucesso", sucesso);
         model.addAttribute("erro", erro);
-        return "aluno/lista";
+        return "aluno/listar";
     }
 
     @GetMapping("/remover/{id}")
