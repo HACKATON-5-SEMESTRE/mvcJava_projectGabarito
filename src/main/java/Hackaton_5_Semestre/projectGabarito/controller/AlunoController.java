@@ -1,4 +1,4 @@
-package Hackaton_5_Semestre.projectGabarito.controller.admin;
+package Hackaton_5_Semestre.projectGabarito.controller;
 
 import Hackaton_5_Semestre.projectGabarito.model.Aluno;
 import Hackaton_5_Semestre.projectGabarito.model.Turma;
