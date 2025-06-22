@@ -2,8 +2,10 @@ package Hackaton_5_Semestre.projectGabarito.controller.admin;
 
 import Hackaton_5_Semestre.projectGabarito.model.Aluno;
 import Hackaton_5_Semestre.projectGabarito.model.Turma;
+import Hackaton_5_Semestre.projectGabarito.model.Usuario;
 import Hackaton_5_Semestre.projectGabarito.service.AlunoService;
 import Hackaton_5_Semestre.projectGabarito.service.TurmaService;
+import Hackaton_5_Semestre.projectGabarito.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,9 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin/aluno")
 public class AlunoController {
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Autowired
     private AlunoService alunoService;
@@ -38,10 +43,16 @@ public class AlunoController {
         return "aluno/formulario";
     }
 
-    // Salvar novo ou editar existente
     @PostMapping("/salvar")
     public String salvar(@ModelAttribute Aluno aluno, Model model) {
         try {
+            // Salvar o usuário primeiro, se existir
+            Usuario usuario = aluno.getUsuario();
+            if (usuario != null) {
+                usuarioService.salvar(usuario); // precisa garantir que haja método salvar no service
+            }
+
+            // Associar a turma corretamente
             if (aluno.getTurma() != null && aluno.getTurma().getId() != null) {
                 Turma turma = turmaService.buscarPorId(aluno.getTurma().getId());
                 aluno.setTurma(turma);
@@ -56,6 +67,7 @@ public class AlunoController {
             return "aluno/formulario";
         }
     }
+
 
     // Listagem de alunos
     @GetMapping("/listar")

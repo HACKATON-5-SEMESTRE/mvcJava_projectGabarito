@@ -35,11 +35,11 @@
             <tbody>
             <tr th:each="aluno : ${alunos}">
                 <td th:text="${aluno.id}"></td>
-                <td th:text="${aluno.nome}"></td>
+                <td th:text="${aluno.usuario.nome}"></td>
                 <td th:text="${aluno.RA}"></td>
-                <td th:text="${aluno.email}"></td>
-                <td th:text="${aluno.login}"></td>
-                <td th:text="${aluno.turma != null ? aluno.turma.nome : 'N/A'}"></td>
+                <td th:text="${aluno.usuario.email}"></td>
+                <td th:text="${aluno.usuario.login}"></td>
+                <td th:text="${aluno.turma.curso + ' - ' + aluno.turma.semestre + 'º Semestre - ' + aluno.turma.sala}"></td>
                 <td>
                     <div class="btn-group btn-group-sm" role="group" aria-label="Ações do Aluno">
                         <a th:href="@{/admin/aluno/editar/{id}(id=${aluno.id})}" class="btn btn-warning" title="Editar">

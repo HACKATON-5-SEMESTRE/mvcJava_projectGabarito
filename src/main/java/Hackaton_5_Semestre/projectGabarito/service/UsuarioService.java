@@ -27,4 +27,8 @@ public class UsuarioService implements UserDetailsService {
     public List<Usuario> listAll() {
         return repository.findAll();
     }
+
+    public Usuario salvar(Usuario usuario) {
+        return repository.save(usuario);
+    }
 }
