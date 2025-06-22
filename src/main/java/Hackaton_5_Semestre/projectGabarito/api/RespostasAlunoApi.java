@@ -31,12 +31,10 @@ public class RespostasAlunoApi {
         return respostasAlunoService.buscarPorAluno(alunoId);
     }
 
-    /*
     @GetMapping("/prova/{provaId}")
     public List<RespostasAluno> buscarPorProva(@PathVariable Long provaId) {
         return respostasAlunoService.buscarPorProva(provaId);
     }
-    */
 
     @PostMapping
     public RespostasAluno criar(@RequestBody RespostasAluno respostasAluno) {
