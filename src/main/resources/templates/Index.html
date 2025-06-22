@@ -1,42 +1,141 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/layout :: head}"></head>
+<head th:replace="~{fragments/layout :: head}">
+    <title>AutoGabarito - Home</title>
+</head>
 <body>
 
 <div th:replace="~{fragments/layout :: menu}"></div>
 
 <div class="container mt-5">
-    <h2 class="mb-4">Bem-vindo ao AutoGabarito!</h2>
-    <p>Você está logado como: <strong th:text="${#authentication.name}">Usuário</strong></p>
 
-    <div
-            th:switch="${#authorization.expression('hasRole(''ADMIN'')') ? 'ADMIN' : (#authorization.expression('hasRole(''PROFESSOR'')') ? 'PROFESSOR' : 'ALUNO')}"
-    >
+    <div class="text-center mb-5">
+        <h1 class="display-4">Bem-vindo ao AutoGabarito!</h1>
+        <p class="lead">
+            Você está logado como: <strong th:text="${#authentication.name}">Usuário</strong>
+        </p>
+    </div>
+
+    <div th:switch="${#authorization.expression('hasRole(''ADMIN'')') ? 'ADMIN' : (#authorization.expression('hasRole(''PROFESSOR'')') ? 'PROFESSOR' : 'ALUNO')}">
+
+        <!-- Área do Administrador -->
         <div th:case="'ADMIN'">
-            <h4>Área do Administrador</h4>
-            <ul class="list-group mb-4">
-                <li class="list-group-item"><a th:href="@{/admin/aluno/listar}">Gerenciar Alunos</a></li>
-                <li class="list-group-item"><a th:href="@{/admin/turmas/listar}">Gerenciar Turmas</a></li>
-                <li class="list-group-item"><a th:href="@{/admin/disciplina/listar}">Gerenciar Disciplinas</a></li>
-            </ul>
+            <h3 class="mb-4 text-center">Área do Administrador</h3>
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-md-4">
+                    <a th:href="@{/admin/aluno/listar}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-primary">
+                            <div class="card-body text-center">
+                                <i class="bi bi-people-fill fs-1 text-primary mb-3"></i>
+                                <h5 class="card-title">Gerenciar Alunos</h5>
+                                <p class="card-text text-muted">Visualize, edite e remova alunos.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a th:href="@{/admin/turmas/listar}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-success">
+                            <div class="card-body text-center">
+                                <i class="bi bi-building fs-1 text-success mb-3"></i>
+                                <h5 class="card-title">Gerenciar Turmas</h5>
+                                <p class="card-text text-muted">Organize as turmas disponíveis.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a th:href="@{/admin/disciplinas/listar}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-warning">
+                            <div class="card-body text-center">
+                                <i class="bi bi-book fs-1 text-warning mb-3"></i>
+                                <h5 class="card-title">Gerenciar Disciplinas</h5>
+                                <p class="card-text text-muted">Adicione e edite disciplinas.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
 
+        <!-- Área do Professor -->
         <div th:case="'PROFESSOR'">
-            <h4>Área do Professor</h4>
-            <ul class="list-group mb-4">
-                <li class="list-group-item"><a th:href="@{/professor/provas}">Criar Provas</a></li>
-                <li class="list-group-item"><a th:href="@{/professor/resultados}">Visualizar Resultados</a></li>
-                <li class="list-group-item"><a th:href="@{/professor/estatisticas}">Ver Estatísticas</a></li>
-            </ul>
+            <h3 class="mb-4 text-center">Área do Professor</h3>
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-md-4">
+                    <a th:href="@{/professor/provas}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-primary">
+                            <div class="card-body text-center">
+                                <i class="bi bi-pencil-square fs-1 text-primary mb-3"></i>
+                                <h5 class="card-title">Criar Provas</h5>
+                                <p class="card-text text-muted">Monte novas avaliações facilmente.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a th:href="@{/professor/resultados}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-success">
+                            <div class="card-body text-center">
+                                <i class="bi bi-bar-chart-line fs-1 text-success mb-3"></i>
+                                <h5 class="card-title">Visualizar Resultados</h5>
+                                <p class="card-text text-muted">Confira os desempenhos dos alunos.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a th:href="@{/professor/estatisticas}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-warning">
+                            <div class="card-body text-center">
+                                <i class="bi bi-graph-up fs-1 text-warning mb-3"></i>
+                                <h5 class="card-title">Ver Estatísticas</h5>
+                                <p class="card-text text-muted">Análise detalhada das provas.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
 
+        <!-- Área do Aluno -->
         <div th:case="'ALUNO'">
-            <h4>Área do Aluno</h4>
-            <ul class="list-group mb-4">
-                <li class="list-group-item"><a th:href="@{/aluno/notas}">Ver Notas</a></li>
-                <li class="list-group-item"><a th:href="@{/aluno/feedbacks}">Ver Feedbacks</a></li>
-            </ul>
+            <h3 class="mb-4 text-center">Área do Aluno</h3>
+            <div class="row g-4 justify-content-center">
+
+                <div class="col-md-5 col-lg-4">
+                    <a th:href="@{/aluno/notas}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-info">
+                            <div class="card-body text-center">
+                                <i class="bi bi-journal-check fs-1 text-info mb-3"></i>
+                                <h5 class="card-title">Ver Notas</h5>
+                                <p class="card-text text-muted">Acompanhe seu desempenho.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-5 col-lg-4">
+                    <a th:href="@{/aluno/feedbacks}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-secondary">
+                            <div class="card-body text-center">
+                                <i class="bi bi-chat-left-text fs-1 text-secondary mb-3"></i>
+                                <h5 class="card-title">Ver Feedbacks</h5>
+                                <p class="card-text text-muted">Receba orientações e comentários.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
         </div>
+
     </div>
 </div>
 
