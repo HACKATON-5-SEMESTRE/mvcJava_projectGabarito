@@ -9,7 +9,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2>Lista de Provas</h2>
-        <a th:href="@{/professor/prova/formulario}" class="btn btn-outline-primary btn-sm">
+        <a th:href="@{/professor/prova/nova}" class="btn btn-outline-primary btn-sm">
             <i class="bi bi-plus-circle"></i> Nova Prova
         </a>
     </div>
@@ -24,27 +24,35 @@
             <thead class="table-light">
             <tr>
                 <th>ID</th>
-                <th>Enunciado</th>
-                <th>Peso</th>
-                <th>Tipo</th>
+                <th>Título</th>
+                <th>Data</th>
+                <th>Turma</th>
+                <th>Disciplina</th>
+                <th>Valor Total</th>
                 <th>Ações</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="questao : ${questoes}">
-                <td th:text="${questao.id}">0</td>
-                <td th:text="${#strings.abbreviate(questao.enunciado, 50)}">Enunciado</td>
-                <td th:text="${questao.peso}">Peso</td>
-                <td th:text="${questao.tipo}">Tipo</td>
+            <tr th:each="prova : ${provas}">
+                <td th:text="${prova.id}">0</td>
+                <td th:text="${prova.titulo}">Título</td>
+                <td th:text="${#temporals.format(prova.dataAplicacao, 'dd/MM/yyyy')}">Data</td>
+                <td th:text="${prova.turma.curso}">Turma</td>
+                <td th:text="${prova.disciplina.nome}">Disciplina</td>
+                <td th:text="${prova.valorTotal}">0.0</td>
                 <td>
-                    <a th:href="@{/professor/prova/questao/formulario/{id}(id=${questao.id})}"
-                       class="btn btn-warning btn-sm"
-                       title="Editar">
+                    <a th:href="@{/professor/questao/multiplas/{id}(id=${prova.id})}"
+                       class="btn btn-primary btn-sm" title="Adicionar Questões">
+                        <i class="bi bi-plus-circle"></i>
+                    </a>
+                    <a th:href="@{/professor/prova/editar/{id}(id=${prova.id})}"
+                       class="btn btn-warning btn-sm" title="Editar Prova">
                         <i class="bi bi-pencil-square"></i>
                     </a>
-                    <a th:href="@{/professor/prova/questao/remover/{id}(id=${questao.id})}"
+                    <a th:href="@{/professor/prova/remover/{id}(id=${prova.id})}"
                        class="btn btn-danger btn-sm"
-                       onclick="return confirm('Tem certeza que deseja remover esta questão?')" title="Remover">
+                       onclick="return confirm('Tem certeza que deseja remover esta prova?')"
+                       title="Remover Prova">
                         <i class="bi bi-trash"></i>
                     </a>
                 </td>
@@ -53,8 +61,8 @@
         </table>
     </div>
 
-    <div th:if="${#lists.isEmpty(questoes)}" class="alert alert-secondary mt-3" role="alert">
-        Nenhuma questão cadastrada.
+    <div th:if="${#lists.isEmpty(provas)}" class="alert alert-secondary mt-3" role="alert">
+        Nenhuma prova cadastrada.
     </div>
 
 </div>

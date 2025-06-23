@@ -14,47 +14,10 @@
                     <p class="text-muted" th:text="'Prova: ' + ${prova.titulo}"></p>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/professor/questao/salvarMultiplas}" method="post"
-                          th:object="${questoesWrapper}">
+                    <form th:action="@{/professor/questao/salvarMultiplas}" method="post">
                         <input type="hidden" name="provaId" th:value="${prova.id}"/>
 
-                        <div id="questoes-container">
-                            <div th:each="questao, iterStat : *{questoes}" class="border rounded p-3 mb-3">
-                                <input type="hidden" th:name="|questoes[${iterStat.index}].id|"
-                                       th:value="${questao.id}"/>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Enunciado</label>
-                                    <textarea th:name="|questoes[${iterStat.index}].enunciado|" class="form-control"
-                                              rows="3" required
-                                              th:text="${questao.enunciado}"></textarea>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Peso</label>
-                                    <input type="number" step="0.1" min="0" th:name="|questoes[${iterStat.index}].peso|"
-                                           class="form-control" required
-                                           th:value="${questao.peso}"/>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Tipo</label>
-                                    <select th:name="|questoes[${iterStat.index}].tipo|" class="form-select" required>
-                                        <option value="">Selecione</option>
-                                        <option th:selected="${questao.tipo == T(Hackaton_5_Semestre.projectGabarito.model.TipoQuestao).OBJETIVA}"
-                                                value="OBJETIVA">Objetiva
-                                        </option>
-                                        <option th:selected="${questao.tipo == T(Hackaton_5_Semestre.projectGabarito.model.TipoQuestao).DISSERTATIVA}"
-                                                value="DISSERTATIVA">Dissertativa
-                                        </option>
-                                    </select>
-                                </div>
-
-                                <button type="button" class="btn btn-danger btn-sm"
-                                        onclick="this.closest('.border').remove()">Remover
-                                </button>
-                            </div>
-                        </div>
+                        <div id="questoes-container"></div>
 
                         <div class="mb-3 text-end">
                             <button type="button" class="btn btn-primary btn-sm" onclick="adicionarQuestao()">+
@@ -64,7 +27,7 @@
 
                         <div class="d-flex justify-content-end gap-2">
                             <a th:href="@{/professor/prova/listar}" class="btn btn-secondary btn-sm">Cancelar</a>
-                            <button type="submit" class="btn btn-success btn-sm">Salvar Todas</button>
+                            <button type="submit" class="btn btn-success btn-sm">Salvar Questões</button>
                         </div>
                     </form>
                 </div>
@@ -74,37 +37,56 @@
 </div>
 
 <div th:replace="~{fragments/layout :: script}"></div>
+
 <script>
     function adicionarQuestao() {
         const container = document.getElementById('questoes-container');
         const index = container.children.length;
 
-        const novaQuestao = document.createElement('div');
-        novaQuestao.classList.add('border', 'rounded', 'p-3', 'mb-3');
-
-        novaQuestao.innerHTML = `
-            <input type="hidden" name="questoes[${index}].id" />
+        const div = document.createElement('div');
+        div.classList.add('border', 'rounded', 'p-3', 'mb-3');
+        div.innerHTML = `
             <div class="mb-3">
                 <label class="form-label">Enunciado</label>
                 <textarea name="questoes[${index}].enunciado" class="form-control" rows="3" required></textarea>
             </div>
+
             <div class="mb-3">
                 <label class="form-label">Peso</label>
-                <input type="number" step="0.1" min="0" name="questoes[${index}].peso" class="form-control" required />
+                <input type="number" name="questoes[${index}].peso" step="0.1" class="form-control" required />
             </div>
+
             <div class="mb-3">
                 <label class="form-label">Tipo</label>
-                <select name="questoes[${index}].tipo" class="form-select" required>
+                <select name="questoes[${index}].tipo" class="form-select" onchange="toggleObjetivaCampos(this, ${index})" required>
                     <option value="">Selecione</option>
                     <option value="OBJETIVA">Objetiva</option>
                     <option value="DISSERTATIVA">Dissertativa</option>
                 </select>
             </div>
+
+            <div id="objetiva-campos-${index}" style="display: none;">
+                <div class="mb-3">
+                    <label class="form-label">Alternativas</label>
+                    <input name="questoes[${index}].alternativas" class="form-control" placeholder="Ex: A) ...; B) ...; C) ..." />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Gabarito</label>
+                    <input name="questoes[${index}].gabarito" class="form-control" placeholder="Ex: A" />
+                </div>
+            </div>
+
             <button type="button" class="btn btn-danger btn-sm" onclick="this.closest('.border').remove()">Remover</button>
         `;
+        container.appendChild(div);
+    }
 
-        container.appendChild(novaQuestao);
+    function toggleObjetivaCampos(select, index) {
+        const campos = document.getElementById(`objetiva-campos-${index}`);
+        campos.style.display = select.value === 'OBJETIVA' ? 'block' : 'none';
     }
 </script>
+
 </body>
+
 </html>

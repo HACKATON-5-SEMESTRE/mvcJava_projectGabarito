@@ -20,11 +20,11 @@ public class Questoes {
     private Double peso;
 
     @Enumerated(EnumType.STRING)
-    private TipoQuestao tipo; // DISSERTATIVA ou OBJETIVA
+    private TipoQuestao tipo;
 
-    private String alternativas; // Pode ser uma string delimitada (ex: "A) ...; B) ...") para objetivas
+    private String alternativas;
 
-    private String gabarito; // Apenas se for objetiva
+    private String gabarito;
 
     @ManyToOne
     @JoinColumn(name = "id_prova")
