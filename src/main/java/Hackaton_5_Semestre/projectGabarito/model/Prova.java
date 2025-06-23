@@ -37,8 +37,8 @@ public class Prova {
     private Disciplina disciplina;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario professor;
+    @JoinColumn(name = "id_usuario", nullable = false)
+    private Usuario usuario;
 
     @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Questoes> questoes = new ArrayList<>();
