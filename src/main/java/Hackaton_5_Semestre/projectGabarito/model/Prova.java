@@ -23,6 +23,8 @@ public class Prova {
 
     private LocalDate dataAplicacao;
 
+    private Double valorTotal;
+
     @Lob
     private String gabaritoOficial;
 
@@ -37,9 +39,6 @@ public class Prova {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario professor;
-
-    @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL)
-    private List<RespostasAluno> respostas;
 
     @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Questoes> questoes = new ArrayList<>();

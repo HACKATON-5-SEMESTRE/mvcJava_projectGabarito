@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,10 +34,6 @@ public class ProvaService {
 
     @Transactional
     public void salvar(Prova prova) {
-        if (prova.getRespostas() == null) {
-            prova.setRespostas(new ArrayList<>());
-        }
-        prova.getRespostas().forEach(resposta -> resposta.setProva(prova));
         repository.save(prova);
     }
 
@@ -48,7 +43,7 @@ public class ProvaService {
 
     public Prova buscarPorId(Long id) {
         Prova prova = repository.findById(id).orElseThrow(() -> new RuntimeException("Prova não encontrada"));
-        prova.getQuestoes().size(); // força carregar a lista
+        prova.getQuestoes().size();
         return prova;
     }
 

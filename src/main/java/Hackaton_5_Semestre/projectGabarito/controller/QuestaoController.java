@@ -2,15 +2,14 @@ package Hackaton_5_Semestre.projectGabarito.controller;
 
 import Hackaton_5_Semestre.projectGabarito.model.Prova;
 import Hackaton_5_Semestre.projectGabarito.model.Questoes;
-import Hackaton_5_Semestre.projectGabarito.model.QuestoesWrapper;
+import Hackaton_5_Semestre.projectGabarito.model.QuestoesForm;
+import Hackaton_5_Semestre.projectGabarito.repository.QuestaoRepository;
 import Hackaton_5_Semestre.projectGabarito.service.ProvaService;
 import Hackaton_5_Semestre.projectGabarito.service.QuestaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/professor/questao")
@@ -41,29 +40,19 @@ public class QuestaoController {
     @GetMapping("/multiplas/{provaId}")
     public String formAdicionarMultiplas(@PathVariable Long provaId, Model model) {
         Prova prova = provaService.buscarPorId(provaId);
-        QuestoesWrapper wrapper = new QuestoesWrapper();
-
-        if (prova.getQuestoes() != null) {
-            wrapper.setQuestoes(new ArrayList<>(prova.getQuestoes()));
-        } else {
-            wrapper.setQuestoes(new ArrayList<>());
-        }
-
         model.addAttribute("prova", prova);
-        model.addAttribute("questoesWrapper", wrapper);
-        return "prova/questao/formulario_multiplas";
+        return "prova/questao/formulario";
     }
 
-    @PostMapping("/salvarMultiplas")
-    public String salvarMultiplas(@RequestParam Long provaId, @ModelAttribute QuestoesWrapper questoesWrapper) {
+    @PostMapping("/questao/salvarMultiplas")
+    public String salvarMultiplasQuestoes(@RequestParam("provaId") Long provaId,
+                                          @ModelAttribute QuestoesForm questoesWrapper) {
         Prova prova = provaService.buscarPorId(provaId);
-
-        for (Questoes questao : questoesWrapper.getQuestoes()) {
-            questao.setProva(prova);
-            questaoService.salvar(questao);
+        for (Questoes q : questoesWrapper.getQuestoes()) {
+            q.setProva(prova);
         }
-
-        return "redirect:/professor/prova/editar/" + provaId;
+        questaoService.salvarTodas(questoesWrapper.getQuestoes());
+        return "redirect:/professor/prova/listar";
     }
 
     @GetMapping("/remover/{id}")

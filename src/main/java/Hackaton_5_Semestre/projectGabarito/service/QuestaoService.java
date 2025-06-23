@@ -29,4 +29,8 @@ public class QuestaoService {
     public void deletar(Long id) {
         repository.deleteById(id);
     }
+
+    public void salvarTodas(List<Questoes> questoes) {
+        repository.saveAll(questoes);
+    }
 }

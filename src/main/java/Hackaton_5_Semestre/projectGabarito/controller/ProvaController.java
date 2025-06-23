@@ -1,9 +1,7 @@
 package Hackaton_5_Semestre.projectGabarito.controller;
 
-import Hackaton_5_Semestre.projectGabarito.model.Disciplina;
 import Hackaton_5_Semestre.projectGabarito.model.Prova;
 import Hackaton_5_Semestre.projectGabarito.model.Questoes;
-import Hackaton_5_Semestre.projectGabarito.model.Turma;
 import Hackaton_5_Semestre.projectGabarito.service.DisciplinaService;
 import Hackaton_5_Semestre.projectGabarito.service.ProvaService;
 import Hackaton_5_Semestre.projectGabarito.service.TurmaService;
@@ -11,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/professor/prova")
@@ -34,43 +34,29 @@ public class ProvaController {
         return "prova/questao/formulario";
     }
 
+    @GetMapping("/nova")
+    public String novaProva(Model model) {
+        model.addAttribute("prova", new Prova());
+        model.addAttribute("turmas", turmaService.listarTodos());
+        model.addAttribute("disciplinas", disciplinaService.listarTodos());
+        return "prova/formulario_prova";
+    }
+
     @PostMapping("/salvar")
-    public String salvar(@ModelAttribute Prova prova, Model model) {
-
-        if (prova.getTurma() == null || prova.getTurma().getId() == null) {
-            model.addAttribute("erro", "A Turma deve ser selecionada.");
-            model.addAttribute("prova", prova);
+    public String salvarProva(@ModelAttribute Prova prova, Model model) {
+        if (prova.getTurma() == null ||
+                prova.getTurma().getId() == null ||
+                prova.getDisciplina() == null ||
+                prova.getDisciplina().getId() == null)
+        {
+            model.addAttribute("erro", "Turma e Disciplina são obrigatórias.");
             model.addAttribute("turmas", turmaService.listarTodos());
             model.addAttribute("disciplinas", disciplinaService.listarTodos());
-            return "prova/questao/formulario";
+            return "prova/formulario_prova";
         }
-
-        if (prova.getDisciplina() == null || prova.getDisciplina().getId() == null) {
-            model.addAttribute("erro", "A Disciplina deve ser selecionada.");
-            model.addAttribute("prova", prova);
-            model.addAttribute("turmas", turmaService.listarTodos());
-            model.addAttribute("disciplinas", disciplinaService.listarTodos());
-            return "prova/questao/formulario";
-        }
-
-        try {
-            Turma turma = turmaService.buscarPorId(prova.getTurma().getId()).orElseThrow(() -> new RuntimeException("Turma não encontrada"));
-            prova.setTurma(turma);
-
-            Disciplina disciplina = disciplinaService.buscarPorId(prova.getDisciplina().getId()).orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
-            prova.setDisciplina(disciplina);
-
-            service.salvar(prova);
-
-            return "redirect:/professor/prova/listar";
-
-        } catch (Exception e) {
-            model.addAttribute("erro", "Erro ao salvar prova: " + e.getMessage());
-            model.addAttribute("prova", prova);
-            model.addAttribute("turmas", turmaService.listarTodos());
-            model.addAttribute("disciplinas", disciplinaService.listarTodos());
-            return "prova/questao/formulario";
-        }
+        prova.setQuestoes(new ArrayList<>());
+        service.salvar(prova);
+        return "redirect:/professor/questao/multiplas/" + prova.getId();
     }
 
     @GetMapping("/listar")
