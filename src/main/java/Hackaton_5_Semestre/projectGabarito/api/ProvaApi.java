@@ -18,12 +18,20 @@ public class ProvaApi {
 
     @GetMapping
     public ResponseEntity<List<Prova>> listarTodos() {
-        return ResponseEntity.ok(service.listarTodos());
+        List<Prova> provas = service.listarTodos();
+        provas.forEach(prova -> prova.getQuestoes().forEach(questao -> questao.getAlternativas()));
+        return ResponseEntity.ok(provas);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Prova> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(service.buscarPorId(id));
+        Prova prova = service.buscarPorId(id);
+        if (prova != null) {
+            prova.getQuestoes().forEach(questao -> questao.getAlternativas());
+            return ResponseEntity.ok(prova);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/turma/{turmaId}")
@@ -32,6 +40,9 @@ public class ProvaApi {
                 .stream()
                 .filter(p -> p.getTurma() != null && p.getTurma().getId().equals(turmaId))
                 .collect(Collectors.toList());
+
+        provas.forEach(prova -> prova.getQuestoes().forEach(questao -> questao.getAlternativas()));
+
         return ResponseEntity.ok(provas);
     }
 

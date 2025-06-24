@@ -2,6 +2,7 @@ package Hackaton_5_Semestre.projectGabarito.api;
 
 import Hackaton_5_Semestre.projectGabarito.api.dto.LoginRequest;
 import Hackaton_5_Semestre.projectGabarito.api.dto.LoginResponse;
+import Hackaton_5_Semestre.projectGabarito.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginApi {
 
     private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
@@ -27,12 +29,12 @@ public class LoginApi {
             Authentication auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getLogin(), request.getSenha())
             );
-
-            return ResponseEntity.ok(new LoginResponse("Login realizado com sucesso!", "Token simulado gerado"));
-
+            String token = jwtTokenProvider.createToken(request.getLogin(), auth.getAuthorities());
+            return ResponseEntity.ok(new LoginResponse("OK", token));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new LoginResponse("Login inválido", null));
+                    .body(new LoginResponse("Credenciais inválidas", null));
         }
     }
 }
+
