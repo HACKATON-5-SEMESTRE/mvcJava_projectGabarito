@@ -7,13 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DisciplinaService {
 
     @Autowired
     private DisciplinaRepository repository;
-
 
     @Transactional
     public void salvar(Disciplina disciplina) {
@@ -24,12 +24,15 @@ public class DisciplinaService {
         return repository.findAll();
     }
 
-    public Disciplina buscarPorId(Long id) {
-        return repository.findById(id).get();
+    public Optional<Disciplina> buscarPorId(Long id) {
+        return repository.findById(id);
     }
 
     public void deletarPorId(Long id) {
         repository.deleteById(id);
     }
 
+    public Optional<Disciplina> buscarPorNome(String nome) {
+        return repository.findByNome(nome);
+    }
 }

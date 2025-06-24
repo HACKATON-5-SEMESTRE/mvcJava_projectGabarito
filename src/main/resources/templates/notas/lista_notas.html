@@ -6,12 +6,8 @@
 <div th:replace="~{fragments/layout :: menu}"></div>
 
 <div class="container my-5">
-
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Lista de Turmas</h2>
-        <a th:href="@{/admin/turmas/novo}" class="btn btn-outline-primary btn-sm">
-            <i class="bi bi-plus-circle"></i> Nova Turma
-        </a>
+        <h2>Notas dos Alunos</h2>
     </div>
 
     <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
@@ -24,25 +20,31 @@
             <thead class="table-light">
             <tr>
                 <th>ID</th>
-                <th>Curso</th>
-                <th>Semestre</th>
-                <th>Sala</th>
+                <th>Aluno</th>
+                <th>Prova</th>
+                <th>Nota</th>
+                <th>Acertos</th>
+                <th>Erros</th>
+                <th>Data de Envio</th>
                 <th>Ações</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="turma : ${turmas}">
-                <td th:text="${turma.id}">1</td>
-                <td th:text="${turma.curso}">2025</td>
-                <td th:text="${turma.semestre}">1</td>
-                <td th:text="${turma.sala}">Sala 01</td>
+            <tr th:each="resposta : ${notas}">
+                <td th:text="${resposta.id}">1</td>
+                <td th:text="${resposta.aluno.nome}">João</td>
+                <td th:text="${resposta.prova.titulo}">Prova 1</td>
+                <td th:text="${resposta.nota}">9.50</td>
+                <td th:text="${resposta.acertos}">8</td>
+                <td th:text="${resposta.erros}">2</td>
+                <td th:text="${#temporals.format(resposta.dataEnvio, 'dd/MM/yyyy HH:mm')}">24/06/2025</td>
                 <td>
-                    <a th:href="@{/admin/turmas/editar/{id}(id=${turma.id})}" class="btn btn-warning btn-sm"
+                    <a th:href="@{/respostas/editar/{id}(id=${resposta.id})}" class="btn btn-warning btn-sm"
                        title="Editar">
                         <i class="bi bi-pencil-square"></i>
                     </a>
-                    <a th:href="@{/admin/turmas/remover/{id}(id=${turma.id})}" class="btn btn-danger btn-sm"
-                       onclick="return confirm('Tem certeza que deseja remover esta turma?')" title="Remover">
+                    <a th:href="@{/respostas/remover/{id}(id=${resposta.id})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Tem certeza que deseja remover esta resposta?')" title="Remover">
                         <i class="bi bi-trash"></i>
                     </a>
                 </td>
@@ -51,8 +53,8 @@
         </table>
     </div>
 
-    <div th:if="${#lists.isEmpty(turmas)}" class="alert alert-secondary mt-3" role="alert">
-        Nenhuma turma cadastrada.
+    <div th:if="${#lists.isEmpty(notas)}" class="alert alert-secondary mt-3" role="alert">
+        Nenhuma nota registrada.
     </div>
 </div>
 

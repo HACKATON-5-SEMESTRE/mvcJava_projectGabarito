@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head}"></head>
+<body>
+
+<div th:replace="~{fragments/layout :: menu}"></div>
+
+<div class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lista de Provas</h2>
+        <a th:href="@{/professor/prova/nova}" class="btn btn-outline-primary btn-sm">
+            <i class="bi bi-plus-circle"></i> Nova Prova
+        </a>
+    </div>
+
+    <div th:if="${message}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <span th:text="${message}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle">
+            <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Data</th>
+                <th>Turma</th>
+                <th>Disciplina</th>
+                <th>Valor Total</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="prova : ${provas}">
+                <td th:text="${prova.id}">0</td>
+                <td th:text="${prova.titulo}">Título</td>
+                <td th:text="${#temporals.format(prova.dataAplicacao, 'dd/MM/yyyy')}">Data</td>
+                <td th:text="${prova.turma.curso}">Turma</td>
+                <td th:text="${prova.disciplina.nome}">Disciplina</td>
+                <td th:text="${prova.valorTotal}">0.0</td>
+                <td>
+
+<!--                    <a th:href="@{/professor/questao/nova/{provaId}(provaId=${prova.id})}"-->
+<!--                       class="btn btn-primary btn-sm" title="Adicionar Questões">-->
+<!--                        <i class="bi bi-plus-circle"></i>-->
+<!--                    </a>-->
+
+                    <a th:href="@{/professor/prova/editar/{id}(id=${prova.id})}"
+                       class="btn btn-warning btn-sm" title="Editar Prova">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a th:href="@{/professor/prova/remover/{id}(id=${prova.id})}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Tem certeza que deseja remover esta prova?')"
+                       title="Remover Prova">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${#lists.isEmpty(provas)}" class="alert alert-secondary mt-3" role="alert">
+        Nenhuma prova cadastrada.
+    </div>
+
+</div>
+
+<div th:replace="~{fragments/layout :: script}"></div>
+
+</body>
+</html>
