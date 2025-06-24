@@ -1,3 +1,4 @@
+// Prova.java
 package Hackaton_5_Semestre.projectGabarito.model;
 
 import jakarta.persistence.*;
@@ -43,4 +44,15 @@ public class Prova {
     @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Questoes> questoes = new ArrayList<>();
 
+    // Helper para adicionar questão
+    public void addQuestao(Questoes questao) {
+        questoes.add(questao);
+        questao.setProva(this);
+    }
+
+    // Helper para remover questão
+    public void removeQuestao(Questoes questao) {
+        questoes.remove(questao);
+        questao.setProva(null);
+    }
 }

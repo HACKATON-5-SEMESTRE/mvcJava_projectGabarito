@@ -41,10 +41,12 @@
                 <td th:text="${prova.disciplina.nome}">Disciplina</td>
                 <td th:text="${prova.valorTotal}">0.0</td>
                 <td>
-                    <a th:href="@{/professor/questao/multiplas/{id}(id=${prova.id})}"
-                       class="btn btn-primary btn-sm" title="Adicionar Questões">
-                        <i class="bi bi-plus-circle"></i>
-                    </a>
+
+<!--                    <a th:href="@{/professor/questao/nova/{provaId}(provaId=${prova.id})}"-->
+<!--                       class="btn btn-primary btn-sm" title="Adicionar Questões">-->
+<!--                        <i class="bi bi-plus-circle"></i>-->
+<!--                    </a>-->
+
                     <a th:href="@{/professor/prova/editar/{id}(id=${prova.id})}"
                        class="btn btn-warning btn-sm" title="Editar Prova">
                         <i class="bi bi-pencil-square"></i>
