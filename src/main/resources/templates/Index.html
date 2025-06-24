@@ -18,7 +18,6 @@
 
     <div th:switch="${#authorization.expression('hasRole(''ADMIN'')') ? 'ADMIN' : (#authorization.expression('hasRole(''PROFESSOR'')') ? 'PROFESSOR' : 'ALUNO')}">
 
-        <!-- Área do Administrador -->
         <div th:case="'ADMIN'">
             <h3 class="mb-4 text-center">Área do Administrador</h3>
             <div class="row g-4 justify-content-center">
@@ -61,13 +60,12 @@
             </div>
         </div>
 
-        <!-- Área do Professor -->
         <div th:case="'PROFESSOR'">
             <h3 class="mb-4 text-center">Área do Professor</h3>
             <div class="row g-4 justify-content-center">
 
                 <div class="col-md-4">
-                    <a th:href="@{/professor/provas}" class="text-decoration-none">
+                    <a th:href="@{/professor/prova/listar}" class="text-decoration-none">
                         <div class="card shadow-sm h-100 border-primary">
                             <div class="card-body text-center">
                                 <i class="bi bi-pencil-square fs-1 text-primary mb-3"></i>
@@ -104,18 +102,29 @@
             </div>
         </div>
 
-        <!-- Área do Aluno -->
         <div th:case="'ALUNO'">
             <h3 class="mb-4 text-center">Área do Aluno</h3>
             <div class="row g-4 justify-content-center">
 
                 <div class="col-md-5 col-lg-4">
-                    <a th:href="@{/respostas/aluno/{id}/notas(id=${#authentication.principal.id})}" class="text-decoration-none">
+                    <a th:href="@{/aluno/notas/lista_notas}" class="text-decoration-none">
                         <div class="card shadow-sm h-100 border-info">
                             <div class="card-body text-center">
                                 <i class="bi bi-journal-check fs-1 text-info mb-3"></i>
                                 <h5 class="card-title">Ver Notas</h5>
                                 <p class="card-text text-muted">Acompanhe seu desempenho.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-5 col-lg-4">
+                    <a th:href="@{/aluno/feedbacks}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 border-secondary">
+                            <div class="card-body text-center">
+                                <i class="bi bi-chat-left-text fs-1 text-secondary mb-3"></i>
+                                <h5 class="card-title">Ver Feedbacks</h5>
+                                <p class="card-text text-muted">Receba orientações e comentários.</p>
                             </div>
                         </div>
                     </a>
