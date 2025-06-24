@@ -1,3 +1,4 @@
+// Questoes.java
 package Hackaton_5_Semestre.projectGabarito.model;
 
 import jakarta.persistence.*;
@@ -22,18 +23,15 @@ public class Questoes {
 
     private Double peso;
 
-    @Enumerated(EnumType.STRING)
-    private TipoQuestao tipo;
-
     @ElementCollection
     @CollectionTable(name = "alternativas", joinColumns = @JoinColumn(name = "questao_id"))
     @Column(name = "alternativa")
     private List<String> alternativas = new ArrayList<>();
 
-    @Column(name = "gabarito")
-    private String gabarito;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_prova")
     private Prova prova;
+
+    @Column(length = 1)
+    private String gabarito; // A, B, C, D ou E
 }
