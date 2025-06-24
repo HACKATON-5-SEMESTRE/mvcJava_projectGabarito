@@ -5,54 +5,85 @@ import Hackaton_5_Semestre.projectGabarito.service.TurmaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
-@RequestMapping("turma")
+@RequestMapping("/admin/turmas")
 public class TurmaController {
 
     @Autowired
     private TurmaService service;
 
-    @GetMapping()
-    public String iniciar(Turma turma, Model model) {
+    @GetMapping("/novo")
+    public String iniciar(Model model) {
+        model.addAttribute("turma", new Turma());
         return "turma/formulario";
     }
 
-    @PostMapping()
-    public String inserir(Turma turma, Model model) {
-        return iniciar(turma, model);
-    }
+    @PostMapping("/salvar")
+    public String salvar(@ModelAttribute Turma turma, Model model) {
 
-    @PostMapping("salvar")
-    public String salvar(Turma turma, Model model) {
+        // Validações
+        if (turma.getCurso() == null || turma.getCurso().trim().isEmpty()) {
+            model.addAttribute("erro", "O campo Curso é obrigatório.");
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
+        }
+
+        if (turma.getSala() == null || turma.getSala().trim().isEmpty()) {
+            model.addAttribute("erro", "O campo Sala é obrigatório.");
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
+        }
+
+        if (turma.getSemestre() == null) {
+            model.addAttribute("erro", "O campo Semestre é obrigatório.");
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
+        }
+
         try {
             service.salvar(turma);
-            return "redirect:/turma/listar";
-        } catch (Exception e){
-            model.addAttribute("message","Não consegue");
-            return iniciar(turma,model);
+            return "redirect:/admin/turmas/listar";
+        } catch (Exception e) {
+            model.addAttribute("erro", "Erro ao salvar a turma: " + e.getMessage());
+            model.addAttribute("turma", turma);
+            return "turma/formulario";
         }
     }
 
-    @GetMapping("listar")
+    @GetMapping("/listar")
     public String listar(Model model) {
         model.addAttribute("turmas", service.listarTodos());
         return "turma/lista";
     }
 
-    @GetMapping("editar/{id}")
-    public String alterar(@PathVariable Long id, Model model) {
-        model.addAttribute("turma", service.buscarPorId(id));
-        return "turma/formulario";
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        try {
+            Optional<Turma> turmaOpt = service.buscarPorId(id);
+            if (turmaOpt.isPresent()) {
+                model.addAttribute("turma", turmaOpt.get()); // ✅ Corrigido
+                return "turma/formulario";
+            } else {
+                model.addAttribute("erro", "Turma não encontrada.");
+                return "redirect:/admin/turmas/listar";
+            }
+        } catch (RuntimeException e) {
+            model.addAttribute("erro", "Turma não encontrada: " + e.getMessage());
+            return "redirect:/admin/turmas/listar";
+        }
     }
 
-    @GetMapping("remover/{id}")
+    @GetMapping("/remover/{id}")
     public String remover(@PathVariable Long id, Model model) {
-        service.deletarPorId(id);
-        return "redirect:/turma/listar";
+        try {
+            service.deletarPorId(id);
+        } catch (RuntimeException e) {
+            model.addAttribute("erro", "Erro ao remover: " + e.getMessage());
+        }
+        return "redirect:/admin/turmas/listar";
     }
 }
