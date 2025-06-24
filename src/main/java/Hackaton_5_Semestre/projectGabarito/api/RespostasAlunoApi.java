@@ -3,12 +3,11 @@ package Hackaton_5_Semestre.projectGabarito.api;
 import Hackaton_5_Semestre.projectGabarito.model.RespostasAluno;
 import Hackaton_5_Semestre.projectGabarito.service.RespostasAlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/respostas-alunos")
 public class RespostasAlunoApi {
 
