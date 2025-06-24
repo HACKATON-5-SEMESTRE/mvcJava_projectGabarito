@@ -38,7 +38,7 @@
                                                                              th:href="@{/professor/prova/listar}">Provas</a>
                 </li>
 
-                <li sec:authorize="hasRole('ALUNO')" class="nav-item"><a class="nav-link" th:href="@{/aluno/notas}">Notas</a>
+                <li sec:authorize="hasRole('ALUNO')" class="nav-item"><a class="nav-link" th:href="@{/aluno/notas/lista_notas}">Notas</a>
                 </li>
                 <li sec:authorize="hasRole('ALUNO')" class="nav-item"><a class="nav-link" th:href="@{/aluno/feedbacks}">Feedbacks</a>
                 </li>

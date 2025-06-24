@@ -39,6 +39,7 @@ public class Usuario implements UserDetails {
                         switch (this.role) {
                             case "ADMIN" -> "ROLE_ADMIN";
                             case "PROFESSOR" -> "ROLE_PROFESSOR";
+                            case "ALUNO" -> "ROLE_ALUNO";
                             default -> "ROLE_USER";
                         }
                 )
