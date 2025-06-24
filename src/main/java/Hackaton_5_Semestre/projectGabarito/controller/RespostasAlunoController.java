@@ -74,4 +74,10 @@ public class RespostasAlunoController {
         respostasAlunoService.deletarPorId(id);
         return "redirect:/aluno/notas/lista_notas";
     }
+
+    @GetMapping("/aluno/{alunoId}/notas")
+    public String listarNotasAluno(@PathVariable Long alunoId, Model model) {
+        model.addAttribute("respostas", respostasAlunoService.buscarPorAluno(alunoId));
+        return "respostas/notasAluno";
+    }
 }

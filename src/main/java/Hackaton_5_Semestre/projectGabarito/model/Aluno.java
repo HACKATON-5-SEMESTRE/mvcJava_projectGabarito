@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@DiscriminatorValue("ALUNO")
 public class Aluno {
 
     @Id
