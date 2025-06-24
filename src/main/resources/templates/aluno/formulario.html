@@ -16,19 +16,23 @@
                 </div>
                 <div class="card-body">
 
-                    <!-- Alerta de erro -->
                     <div th:if="${erro}" class="alert alert-danger" th:text="${erro}"></div>
 
                     <form th:action="@{/admin/aluno/salvar}" th:object="${aluno}" method="post">
 
-                        <!-- Campo oculto para ID do aluno -->
                         <input type="hidden" th:field="*{id}"/>
-                        <!-- Campo oculto para ID do usuário -->
                         <input type="hidden" th:field="*{usuario.id}"/>
+
+                        <input type="hidden" th:field="*{usuario.role}" th:value="'USER'"/>
 
                         <div class="mb-3">
                             <label for="nome" class="form-label">Nome</label>
                             <input type="text" id="nome" th:field="*{usuario.nome}" class="form-control" required/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cpf" class="form-label">CPF</label>
+                            <input type="text" id="cpf" th:field="*{usuario.cpf}" class="form-control" required/>
                         </div>
 
                         <div class="mb-3">
@@ -47,6 +51,12 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" id="password" th:field="*{usuario.password}" class="form-control"
+                                   required/>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="turma" class="form-label">Turma</label>
                             <select id="turma" th:field="*{turma.id}" class="form-select" required>
                                 <option value="">Selecione uma turma</option>
@@ -61,6 +71,7 @@
                             <a th:href="@{/admin/aluno/listar}" class="btn btn-secondary me-2">Cancelar</a>
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
+
                     </form>
 
                 </div>

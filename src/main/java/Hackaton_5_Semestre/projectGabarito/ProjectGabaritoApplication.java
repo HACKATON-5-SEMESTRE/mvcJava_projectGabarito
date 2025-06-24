@@ -23,15 +23,14 @@ public class ProjectGabaritoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        boolean adminExists = usuarioRepository.findAll().stream()
-                .anyMatch(user -> "ADMIN".equalsIgnoreCase(user.getRole()));
+        boolean adminExists = usuarioRepository.findAll().stream().anyMatch(user -> "ADMIN".equalsIgnoreCase(user.getRole()));
 
         if (!adminExists) {
             Usuario admin = new Usuario();
             admin.setNome("Administrador");
             admin.setLogin("admin");
             admin.setPassword(passwordEncoder.encode("admin"));
-            admin.setCpf(0L);
+            admin.setCpf("08916635926");
             admin.setEmail("admin@exemplo.com");
             admin.setRole("ADMIN");
             usuarioRepository.save(admin);
@@ -44,7 +43,7 @@ public class ProjectGabaritoApplication implements CommandLineRunner {
             professor1.setNome("Professor Um");
             professor1.setLogin("prof1");
             professor1.setPassword(passwordEncoder.encode("123456"));
-            professor1.setCpf(11111111111L);
+            professor1.setCpf("54848746612");
             professor1.setEmail("prof1@escola.com");
             professor1.setRole("PROFESSOR");
             usuarioRepository.save(professor1);
@@ -57,7 +56,7 @@ public class ProjectGabaritoApplication implements CommandLineRunner {
             professor2.setNome("Professor Dois");
             professor2.setLogin("prof2");
             professor2.setPassword(passwordEncoder.encode("123456"));
-            professor2.setCpf(22222222222L);
+            professor2.setCpf("97367210190");
             professor2.setEmail("prof2@escola.com");
             professor2.setRole("PROFESSOR");
             usuarioRepository.save(professor2);
