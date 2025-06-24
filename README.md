@@ -53,7 +53,7 @@ Este projeto é a parte **backend** da aplicação de correção automatizada de
 ## 🧠 Equipe
 
 - **Daniel Mesquita Oliveira** – RA: 14044 – [@danielsz3](https://github.com/danielsz3)
-- **Igor Antonucci** – RA: 12345 – [@IgorQuadros](https://github.com/IgorQuadros)
+- **Igor Antonucci** – RA: 13636 – [@IgorQuadros](https://github.com/IgorQuadros)
 - **Paulo Ricardo Rigobello Muraro** – RA: 4784 – [@paulorigobello](https://github.com/paulorigobello)
 - **Thiago da Silva Felipe** – RA: 13628 – [@ThiagoFelipe01](https://github.com/ThiagoFelipe01)
 
