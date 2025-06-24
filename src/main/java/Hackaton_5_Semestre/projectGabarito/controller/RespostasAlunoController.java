@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("respostas")
+@RequestMapping("aluno/notas")
 public class RespostasAlunoController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class RespostasAlunoController {
         model.addAttribute("alunos", alunoService.listarTodos());
         model.addAttribute("provas", provaService.listarTodos());
 
-        return "respostas/formulario";
+        return "notas/lista_notas";
     }
 
     @PostMapping("salvar")
@@ -41,20 +41,20 @@ public class RespostasAlunoController {
             }
 
             respostasAlunoService.salvar(respostasAluno);
-            return "redirect:/respostas/listar";
+            return "redirect:/aluno/notas/lista_notas";
         } catch (Exception e) {
             model.addAttribute("message", "Erro ao salvar resposta: " + e.getMessage());
             model.addAttribute("alunos", alunoService.listarTodos());
             model.addAttribute("provas", provaService.listarTodos());
 
-            return "respostas/formulario";
+            return "notas/lista_notas";
         }
     }
 
-    @GetMapping("listar")
+    @GetMapping("lista_notas")
     public String listar(Model model) {
         model.addAttribute("respostas", respostasAlunoService.listarTodos());
-        return "respostas/lista";
+        return "notas/lista_notas";
     }
 
     @GetMapping("editar/{id}")
@@ -66,12 +66,18 @@ public class RespostasAlunoController {
         model.addAttribute("alunos", alunoService.listarTodos());
         model.addAttribute("provas", provaService.listarTodos());
 
-        return "respostas/formulario";
+        return "notas/lista_notas";
     }
 
     @GetMapping("remover/{id}")
     public String remover(@PathVariable Long id) {
         respostasAlunoService.deletarPorId(id);
-        return "redirect:/respostas/listar";
+        return "redirect:/aluno/notas/lista_notas";
+    }
+
+    @GetMapping("/aluno/{alunoId}/notas")
+    public String listarNotasAluno(@PathVariable Long alunoId, Model model) {
+        model.addAttribute("respostas", respostasAlunoService.buscarPorAluno(alunoId));
+        return "respostas/notasAluno";
     }
 }

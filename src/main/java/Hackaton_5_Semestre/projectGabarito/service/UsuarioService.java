@@ -5,8 +5,11 @@ import Hackaton_5_Semestre.projectGabarito.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,13 +22,29 @@ public class UsuarioService implements UserDetailsService {
         this.repository = repository;
     }
 
-    public boolean loginJaExisteParaOutroUsuario(String login, Long idAtual) {
-        return repository.findByLogin(login).stream().anyMatch(usuario -> !usuario.getId().equals(idAtual));
-    }
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByLogin(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
+        Usuario usuario = repository.findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado: " + username));
+
+        // Mapeia a role para SimpleGrantedAuthority com prefixo "ROLE_"
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + usuario.getRole());
+
+        return User.builder()
+                .username(usuario.getLogin())
+                .password(usuario.getPassword()) // senha codificada (BCrypt)
+                .authorities(Collections.singletonList(authority))
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(false)
+                .build();
+    }
+
+    public boolean loginJaExisteParaOutroUsuario(String login, Long idAtual) {
+        return repository.findByLogin(login)
+                .stream()
+                .anyMatch(usuario -> !usuario.getId().equals(idAtual));
     }
 
     public boolean loginExiste(String login, Long idIgnorar) {
